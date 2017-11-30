@@ -1,3 +1,6 @@
+# Eclipse files
+.*
+
 # Compiled class file
 *.class
 
