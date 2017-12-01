@@ -1,5 +1,10 @@
 grammar PSL;
 
+@header {
+    import wci.intermediate.*;
+    import wci.intermediate.symtabimpl.*;
+}
+
 program : block;
 block : decl_list compound_stmt ;
 
@@ -22,11 +27,12 @@ order_stmt : 	ORDER constant stmt;
 
 variable :		'@' IDENTIFIER ;
 
-expr :			expr MUL_OP expr ';)'
-	 |			expr ADD_OP expr ';)'
-	 |			polynomial ';)'
-	 |			IDENTIFIER ';)'
-	 |			'(' expr ')' ';)'
+expr locals [ TypeSpec type = null ]
+	 :			expr MUL_OP expr ';)'  # mulExpr
+	 |			expr ADD_OP expr ';)'  # addExpr
+	 |			polynomial ';)'		   # polynomialExpr
+	 |			variable ';)'		   # variableExpr
+	 |			'(' expr ')' ';)'	   # parenExpr
 	 ;
 
 polynomial :	monomial
@@ -40,7 +46,10 @@ monomial :		constant
 	 	 | 		X POWER constant
 	 	 ;
 	 
-constant : 		sign? INTEGER ;
+constant locals [ TypeSpec type = null ] 
+	: 		sign? INTEGER 
+	;
+			
 sign :			'+' | '-' ;
 
 START:			'START' ;

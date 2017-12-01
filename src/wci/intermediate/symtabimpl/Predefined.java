@@ -23,6 +23,7 @@ import static wci.intermediate.typeimpl.TypeKeyImpl.*;
 public class Predefined
 {
     // Predefined types.
+    public static TypeSpec polynomialType;
     public static TypeSpec integerType;
     public static TypeSpec realType;
     public static TypeSpec booleanType;
@@ -30,6 +31,7 @@ public class Predefined
     public static TypeSpec undefinedType;
 
     // Predefined identifiers.
+    public static SymTabEntry polynomialId;
     public static SymTabEntry integerId;
     public static SymTabEntry realId;
     public static SymTabEntry booleanId;

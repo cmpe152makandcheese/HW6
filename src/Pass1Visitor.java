@@ -2,6 +2,8 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import org.antlr.v4.runtime.misc.NotNull;
+
 import wci.intermediate.*;
 import wci.intermediate.symtabimpl.*;
 import wci.util.*;
@@ -13,7 +15,7 @@ import static wci.intermediate.symtabimpl.DefinitionImpl.*;
 public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 	private SymTabStack symTabStack;
     private SymTabEntry programId;
-    private ArrayList<SymTabEntry> variableIdList;
+    private SymTabEntry variableIdReference;
     private PrintWriter jFile;
     
     public Pass1Visitor()
@@ -93,12 +95,58 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 	
 	@Override 
 	public Integer visitVar_id(PSLParser.Var_idContext ctx) {
-		return visitChildren(ctx);
+		String variableName = ctx.IDENTIFIER().toString();
+        
+        SymTabEntry variableId = symTabStack.enterLocal(variableName);
+        variableId.setDefinition(VARIABLE);
+        variableIdReference = variableId;
+        
+        return visitChildren(ctx); 
 	}
 
 	@Override 
 	public Integer visitType_id(PSLParser.Type_idContext ctx) {
-		return visitChildren(ctx); 
+		String typeName = ctx.IDENTIFIER().toString();
+        
+        TypeSpec type;
+        String   typeIndicator;
+        
+        if (typeName.equalsIgnoreCase("polynomial")) {
+            type = Predefined.integerType;
+            typeIndicator = "I";
+        }
+        else {
+            type = null;
+            typeIndicator = "?";
+        }
+                    
+        SymTabEntry id = variableIdReference;
+        id.setTypeSpec(type);
+            
+        // Emit a field declaration.
+        jFile.println(".field private static " + id.getName() + " " + typeIndicator);
+
+        
+        return visitChildren(ctx);
+	}
+	
+	@Override public Integer visitAddExpr(PSLParser.AddExprContext ctx) { 
+        Integer value = visitChildren(ctx);
+        
+        TypeSpec type1 = ctx.expr(0).type;
+        TypeSpec type2 = ctx.expr(1).type;
+        
+        boolean integerMode =    (type1 == Predefined.integerType)
+                              && (type2 == Predefined.integerType);
+        boolean realMode    =    (type1 == Predefined.realType)
+                              && (type2 == Predefined.realType);
+        
+        TypeSpec type = integerMode ? Predefined.integerType
+                      : realMode    ? Predefined.realType
+                      :               null;
+        ctx.type = type;
+        
+        return value; 
 	}
 
 	@Override 
@@ -128,11 +176,6 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 
 	@Override 
 	public Integer visitVariable(PSLParser.VariableContext ctx) { 
-		return visitChildren(ctx); 
-	}
-
-	@Override 
-	public Integer visitExpr(PSLParser.ExprContext ctx) { 
 		return visitChildren(ctx); 
 	}
 
