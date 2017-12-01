@@ -1,3 +1,6 @@
+# Antlr generated files
+target/*
+
 # Eclipse files
 .*
 
