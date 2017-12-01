@@ -78,7 +78,7 @@ public class Predefined
     private static void initializeTypes(SymTabStack symTabStack)
     {
     	// Type polynomial.
-    	polynomialId = symTabStack.enterLocal("integer");
+    	polynomialId = symTabStack.enterLocal("polynomial");
     	polynomialType = TypeFactory.createType(POLYNOMIAL);
     	polynomialType.setIdentifier(polynomialId);
     	polynomialId.setDefinition(DefinitionImpl.TYPE);

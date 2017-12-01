@@ -112,8 +112,8 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
         String   typeIndicator;
         
         if (typeName.equalsIgnoreCase("polynomial")) {
-            type = Predefined.integerType;
-            typeIndicator = "I";
+            type = Predefined.polynomialType;
+            typeIndicator = "P";
         }
         else {
             type = null;
@@ -131,22 +131,7 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 	}
 	
 	@Override public Integer visitAddExpr(PSLParser.AddExprContext ctx) { 
-        Integer value = visitChildren(ctx);
-        
-        TypeSpec type1 = ctx.expr(0).type;
-        TypeSpec type2 = ctx.expr(1).type;
-        
-        boolean integerMode =    (type1 == Predefined.integerType)
-                              && (type2 == Predefined.integerType);
-        boolean realMode    =    (type1 == Predefined.realType)
-                              && (type2 == Predefined.realType);
-        
-        TypeSpec type = integerMode ? Predefined.integerType
-                      : realMode    ? Predefined.realType
-                      :               null;
-        ctx.type = type;
-        
-        return value; 
+        return visitChildren(ctx);
 	}
 
 	@Override 

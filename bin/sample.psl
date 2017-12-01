@@ -1,0 +1,6 @@
+c1 -> constant ;)
+c2 -> constant ;)
+
+START
+	@c1 =! 2 ;)
+FINISH
