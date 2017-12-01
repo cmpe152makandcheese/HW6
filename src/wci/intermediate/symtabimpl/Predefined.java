@@ -77,6 +77,13 @@ public class Predefined
      */
     private static void initializeTypes(SymTabStack symTabStack)
     {
+    	// Type polynomial.
+    	polynomialId = symTabStack.enterLocal("integer");
+    	polynomialType = TypeFactory.createType(POLYNOMIAL);
+    	polynomialType.setIdentifier(polynomialId);
+    	polynomialId.setDefinition(DefinitionImpl.TYPE);
+    	polynomialId.setTypeSpec(polynomialType);
+    	
         // Type integer.
         integerId = symTabStack.enterLocal("integer");
         integerType = TypeFactory.createType(SCALAR);
