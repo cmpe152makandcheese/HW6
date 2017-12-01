@@ -176,11 +176,8 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 
 	@Override 
 	public Integer visitConstant(PSLParser.ConstantContext ctx) { 
-		return visitChildren(ctx); 
+		ctx.type = Predifined.integerType;
+        return visitChildren(ctx); 
 	}
 	
-	@Override 
-	public Integer visitSign(PSLParser.SignContext ctx) { 
-		return visitChildren(ctx); 
-	}
 }
