@@ -92,101 +92,67 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 	}
 	
 	@Override 
-	public Integer visitVar_id(PSLParser.Var_idContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
+	public Integer visitVar_id(PSLParser.Var_idContext ctx) {
+		return visitChildren(ctx);
+	}
+
 	@Override 
-	public Integer visitType_id(PSLParser.Type_idContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
+	public Integer visitType_id(PSLParser.Type_idContext ctx) {
+		return visitChildren(ctx); 
+	}
+
 	@Override 
-	public Integer visitStmt(PSLParser.StmtContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
+	public Integer visitStmt(PSLParser.StmtContext ctx) {
+		return visitChildren(ctx);
+	}
+	
 	@Override 
-	public Integer visitCompound_stmt(PSLParser.Compound_stmtContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
+	public Integer visitCompound_stmt(PSLParser.Compound_stmtContext ctx) {
+		return visitChildren(ctx);
+	}
+
 	@Override 
-	public Integer visitStmt_list(PSLParser.Stmt_listContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
+	public Integer visitStmt_list(PSLParser.Stmt_listContext ctx) { 
+		return visitChildren(ctx);
+	}
+
 	@Override 
-	public Integer visitAssignment_stmt(PSLParser.Assignment_stmtContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
+	public Integer visitAssignment_stmt(PSLParser.Assignment_stmtContext ctx) { 
+		return visitChildren(ctx); 
+	}
+
 	@Override 
-	public Integer visitOrder_stmt(PSLParser.Order_stmtContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
+	public Integer visitOrder_stmt(PSLParser.Order_stmtContext ctx) { 
+		return visitChildren(ctx); 
+	}
+
 	@Override 
-	public Integer visitVariable(PSLParser.VariableContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
+	public Integer visitVariable(PSLParser.VariableContext ctx) { 
+		return visitChildren(ctx); 
+	}
+
 	@Override 
-	public Integer visitExpr(PSLParser.ExprContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
+	public Integer visitExpr(PSLParser.ExprContext ctx) { 
+		return visitChildren(ctx); 
+	}
+
 	@Override 
-	public Integer visitPolynomial(PSLParser.PolynomialContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
+	public Integer visitPolynomial(PSLParser.PolynomialContext ctx) { 
+		return visitChildren(ctx); 
+	}
+
 	@Override 
-	public Integer visitMonomial(PSLParser.MonomialContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
+	public Integer visitMonomial(PSLParser.MonomialContext ctx) { 
+		return visitChildren(ctx); 
+	}
+
 	@Override 
-	public Integer visitConstant(PSLParser.ConstantContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
+	public Integer visitConstant(PSLParser.ConstantContext ctx) { 
+		return visitChildren(ctx); 
+	}
+	
 	@Override 
-	public Integer visitSign(PSLParser.SignContext ctx) { return visitChildren(ctx); }
+	public Integer visitSign(PSLParser.SignContext ctx) { 
+		return visitChildren(ctx); 
+	}
 }
