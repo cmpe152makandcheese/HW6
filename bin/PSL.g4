@@ -40,15 +40,24 @@ polynomial :	monomial
 		   ; 
 
 monomial :		constant 
-	 	 | 		constant X 
-	 	 | 		constant X POWER constant 
+	 	 | 		coeficient X 
+	 	 | 		coeficient X POWER power 
 	 	 | 		X 
-	 	 | 		X POWER constant
+	 	 | 		X POWER power
 	 	 ;
+
+power locals [ TypeSpec type = null ] 
+	: 		sign? INTEGER 
+	;
 	 
 constant locals [ TypeSpec type = null ] 
 	: 		sign? INTEGER 
 	;
+
+coeficient locals [ TypeSpec type = null ] 
+	: 		sign? INTEGER 
+	;
+	
 			
 sign :			'+' | '-' ;
 

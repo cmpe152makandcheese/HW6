@@ -140,9 +140,21 @@ public interface PSLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVar_id(@NotNull PSLParser.Var_idContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PSLParser#power}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPower(@NotNull PSLParser.PowerContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PSLParser#stmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitStmt(@NotNull PSLParser.StmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PSLParser#coeficient}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCoeficient(@NotNull PSLParser.CoeficientContext ctx);
 }

@@ -1,6 +1,7 @@
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import org.antlr.v4.runtime.misc.NotNull;
 
@@ -17,6 +18,8 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
     private SymTabEntry programId;
     private SymTabEntry variableIdReference;
     private PrintWriter jFile;
+    private Stack<Integer> polynomialReference = new Stack<Integer>();
+    private Integer[] monomialReference = new Integer[2];
     
     public Pass1Visitor()
     {
@@ -165,19 +168,49 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 	}
 
 	@Override 
-	public Integer visitPolynomial(PSLParser.PolynomialContext ctx) { 
+	public Integer visitPolynomial(PSLParser.PolynomialContext ctx) {
+		System.out.println("polynomial");
 		return visitChildren(ctx); 
 	}
 
 	@Override 
 	public Integer visitMonomial(PSLParser.MonomialContext ctx) { 
+		System.out.println("monomial");
+		monomialReference[0] = 1;
+		monomialReference[1] = 1;
+		
+		System.out.println("Depth: " + ctx.depth());
+		
+		
 		return visitChildren(ctx); 
 	}
 
 	@Override 
-	public Integer visitConstant(PSLParser.ConstantContext ctx) { 
-		ctx.type = Predifined.integerType;
+	public Integer visitConstant(PSLParser.ConstantContext ctx) {
+		System.out.println("Monomial of power 0");
+		ctx.type = Predefined.integerType;
+		monomialReference[0] = Integer.parseInt(ctx.getText());
+		monomialReference[1] = 0;
+		System.out.println("Coefficient: " + monomialReference[0]);
+		System.out.println("Power: " + monomialReference[1]);
         return visitChildren(ctx); 
 	}
+	
+	@Override 
+	public Integer visitCoeficient(PSLParser.CoeficientContext ctx) { 
+		System.out.println("coeficient");
+		monomialReference[0] = Integer.parseInt(ctx.getText());
+		System.out.println("Changed Coefficient: " + monomialReference[0]);
+		return visitChildren(ctx); 
+	}
+
+	@Override 
+	public Integer visitPower(PSLParser.PowerContext ctx) { 
+		System.out.println("power");
+		monomialReference[1] = Integer.parseInt(ctx.getText());
+		System.out.println("Changed Power: " + monomialReference[1]);
+		return visitChildren(ctx); 
+	}
+
 	
 }
