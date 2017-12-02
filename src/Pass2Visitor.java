@@ -90,7 +90,8 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
         String op = ctx.ADD_OP().getText();
         String opcode;	
         
-        // TODO: This is probably wrong, needs to be changed to custom add not just assembly add
+        // TODO: This is probably wrong, needs to be changed to custom add 
+        //       not just assembly add
         if (op.equals("+!")) {
             opcode = polynomialMode ? "iadd"
                    :                  "????";
@@ -100,11 +101,82 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
                    :              	  "????";
         }
         
+        // TODO: Remove later
+        jFile.println("THIS EXPR IS WRONG :)");
+        
         // Emit an add or subtract instruction.
         jFile.println("\t" + opcode);
         
         return value; 
     }
+	
+	@Override 
+	public Integer visitMulExpr(PSLParser.MulExprContext ctx) { 
+		Integer value = visitChildren(ctx);
+        
+        TypeSpec type1 = ctx.expr(0).type;
+        TypeSpec type2 = ctx.expr(1).type;
+        
+        boolean polynomialMode =	(type1 == Predefined.polynomialType)
+							  	 && (type2 == Predefined.polynomialType);
+        
+        String op = ctx.MUL_OP().getText();
+        String opcode;	
+        
+        // TODO: This is probably wrong, needs to be changed to custom mult 
+        //       not just assembly mult
+        if (op.equals("*!")) {
+            opcode = polynomialMode ? "imul"
+                   :                  "????";
+        }
+        else {
+            opcode = polynomialMode ? "idiv"
+                   :              	  "????";
+        }
+        
+        // TODO: Remove later
+        jFile.println("THIS EXPR IS WRONG :)");
+        
+        // Emit an add or subtract instruction.
+        jFile.println("\t" + opcode);
+        
+        return value; 	
+    }
+	
+	@Override 
+	public Integer visitVariableExpr(PSLParser.VariableExprContext ctx) { 
+        String variableName = ctx.variable().IDENTIFIER().toString();
+        TypeSpec type = ctx.type;
+        
+        String typeIndicator = (type == Predefined.polynomialType) ? "P"
+                             :                                    "?";
+        
+        // Emit a field get instruction.
+        jFile.println("\tgetstatic\t" + programName +
+                      "/" + variableName + " " + typeIndicator);
+        
+        return visitChildren(ctx); 	
+    }
+	
+	@Override 
+	public Integer visitConstant(PSLParser.ConstantContext ctx) {
+        // Emit a load constant instruction.
+        jFile.println("\tldc\t" + ctx.getText());
+        return visitChildren(ctx); 
+	}
+	
+	@Override 
+	public Integer visitCoeficient(PSLParser.CoeficientContext ctx) { 
+        // Emit a load constant instruction.
+        jFile.println("\tldc\t" + ctx.getText());
+		return visitChildren(ctx); 
+	}
 
+	@Override 
+	public Integer visitPower(PSLParser.PowerContext ctx) { 
+        // Emit a load constant instruction.
+        jFile.println("\tldc\t" + ctx.getText());
+		return visitChildren(ctx); 
+	}
 
 }
