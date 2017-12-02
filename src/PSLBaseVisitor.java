@@ -98,6 +98,13 @@ public class PSLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements PS
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitDerivative_stmt(@NotNull PSLParser.Derivative_stmtContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitVariableExpr(@NotNull PSLParser.VariableExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
