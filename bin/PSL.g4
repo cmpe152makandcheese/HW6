@@ -22,17 +22,17 @@ stmt :			assignment_stmt
 
 compound_stmt :	START stmt_list FINISH ;
 stmt_list : 	stmt ( stmt)* ; 
-assignment_stmt : variable '=!' expr;
-order_stmt : 	ORDER constant stmt;
+assignment_stmt : variable '=!' expr ';)' ;
+order_stmt : 	ORDER constant stmt ;
 
 variable :		'@' IDENTIFIER ;
 
 expr locals [ TypeSpec type = null ]
-	 :			expr MUL_OP expr ';)'  # mulExpr
-	 |			expr ADD_OP expr ';)'  # addExpr
-	 |			polynomial ';)'		   # polynomialExpr
-	 |			variable ';)'		   # variableExpr
-	 |			'(' expr ')' ';)'	   # parenExpr
+	 :			expr MUL_OP expr   # mulExpr
+	 |			expr ADD_OP expr   # addExpr
+	 |			polynomial		   # polynomialExpr
+	 |			variable		   # variableExpr
+	 |			'(' expr ')'	   # parenExpr
 	 ;
 
 polynomial :	monomial

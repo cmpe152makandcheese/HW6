@@ -3,8 +3,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import org.antlr.v4.runtime.misc.NotNull;
-
 import wci.intermediate.*;
 import wci.intermediate.symtabimpl.*;
 import wci.util.*;
@@ -135,8 +133,54 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
         return visitChildren(ctx);
 	}
 	
-	@Override public Integer visitAddExpr(PSLParser.AddExprContext ctx) { 
-        return visitChildren(ctx);
+	@Override 
+	public Integer visitAddExpr(PSLParser.AddExprContext ctx) { 
+		Integer value = visitChildren(ctx);
+        
+        TypeSpec type1 = ctx.expr(0).type;
+        TypeSpec type2 = ctx.expr(1).type;
+        
+        boolean polynomialMode =    (type1 == Predefined.polynomialType)
+                              && (type2 == Predefined.polynomialType);
+        
+        TypeSpec type = polynomialMode ? Predefined.polynomialType
+                      :               null;
+        ctx.type = type;
+        
+        return value; 
+	}
+	
+	@Override 
+	public Integer visitMulExpr(PSLParser.MulExprContext ctx) { 
+		Integer value = visitChildren(ctx);
+        
+        TypeSpec type1 = ctx.expr(0).type;
+        TypeSpec type2 = ctx.expr(1).type;
+        
+        boolean polynomialMode =    (type1 == Predefined.polynomialType)
+                              && (type2 == Predefined.polynomialType);
+        
+        TypeSpec type = polynomialMode ? Predefined.polynomialType
+                      :               null;
+        ctx.type = type;
+        
+        return value; 
+	}
+	
+	@Override 
+	public Integer visitVariableExpr(PSLParser.VariableExprContext ctx) { 
+		String variableName = ctx.variable().IDENTIFIER().toString();
+        SymTabEntry variableId = symTabStack.lookup(variableName);
+        
+        ctx.type = variableId.getTypeSpec();
+        return visitChildren(ctx);  
+	}
+	
+	@Override 
+	public Integer visitParenExpr(PSLParser.ParenExprContext ctx) { 
+		Integer value = visitChildren(ctx); 
+        ctx.type = ctx.expr().type;
+        return value;
 	}
 
 	@Override 
@@ -171,13 +215,11 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 
 	@Override 
 	public Integer visitPolynomial(PSLParser.PolynomialContext ctx) {
-		System.out.println("polynomial");
 		return visitChildren(ctx); 
 	}
 
 	@Override 
 	public Integer visitMonomial(PSLParser.MonomialContext ctx) { 
-		System.out.println("monomial");
 		monomialReference = new Integer[2];
 		monomialReference[0] = 1;
 		monomialReference[1] = 1;
@@ -187,20 +229,17 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 
 	@Override 
 	public Integer visitConstant(PSLParser.ConstantContext ctx) {
-		System.out.println("Monomial of power 0");
 		ctx.type = Predefined.integerType;
 		monomialReference[0] = Integer.parseInt(ctx.getText());
 		monomialReference[1] = 0;
-		System.out.println("Add to poly... " + monomialReference[0] + "x^" + monomialReference[1]);
 		polynomialReference.push(monomialReference);
         return visitChildren(ctx); 
 	}
 	
 	@Override 
 	public Integer visitCoeficient(PSLParser.CoeficientContext ctx) { 
-		System.out.println("coeficient");
+		ctx.type = Predefined.integerType;
 		monomialReference[0] = Integer.parseInt(ctx.getText());
-		System.out.println("Add to poly... " + monomialReference[0] + "x^" + monomialReference[1]);
 		polynomialReference.push(monomialReference);
 		currentDepth = ctx.depth();
 		return visitChildren(ctx); 
@@ -208,25 +247,12 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 
 	@Override 
 	public Integer visitPower(PSLParser.PowerContext ctx) { 
-		System.out.println("power");
+		ctx.type = Predefined.integerType;
 		if (ctx.depth() == currentDepth) {
-			System.out.println("Fixing poly...");
 			polynomialReference.pop();
 		}
 		monomialReference[1] = Integer.parseInt(ctx.getText());
-		System.out.println("Add to poly... " + monomialReference[0] + "x^" + monomialReference[1]);
 		polynomialReference.push(monomialReference);
-		
-		
-		if (ctx.depth() == 15) {
-			System.out.println("Printing whole polynomial");
-			Integer s = polynomialReference.size();
-			for (Integer i=0; i<s; i++) {
-				Integer[] temp = new Integer[2];
-				temp = polynomialReference.pop();
-				System.out.println("Index: " + i + " " + temp[0] + "x^" + temp[1]);
-			}
-		}
 		
 		return visitChildren(ctx); 
 	}
