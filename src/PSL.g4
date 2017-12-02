@@ -18,12 +18,14 @@ type_id :		IDENTIFIER ;
 stmt :			assignment_stmt
 	 |			compound_stmt 
 	 |			order_stmt
+	 |			derivative_stmt
 	 ;
 
 compound_stmt :	START stmt_list FINISH ;
 stmt_list : 	stmt ( stmt)* ; 
-assignment_stmt : variable '=!' expr ';)' ;
-order_stmt : 	ORDER constant stmt ;
+assignment_stmt : variable '=!' expr ';)';
+order_stmt : 	ORDER constant variable stmt;
+derivative_stmt: DERIVATIVE variable;
 
 variable :		'@' IDENTIFIER ;
 
@@ -64,6 +66,7 @@ sign :			'+' | '-' ;
 START:			'START' ;
 FINISH:			'FINISH' ;
 ORDER:			'ORDER' ;
+DERIVATIVE: 	'DERIVATIVE' ;
 
 IDENTIFIER :	[a-wyzA-WYZ][a-zA-Z0-9]* ;
 INTEGER :		[0-9]+ ;
@@ -72,6 +75,7 @@ POWER:			'^' ;
 
 ADD_OP :		'+!' ;
 MUL_OP :		'*!' ;
+
 
 NEWLINE :		'\r'? '\n' -> skip ;
 WS:				[ \t]+ -> skip ;
