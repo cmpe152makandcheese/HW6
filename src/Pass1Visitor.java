@@ -18,14 +18,16 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
     private SymTabEntry programId;
     private SymTabEntry variableIdReference;
     private PrintWriter jFile;
-    private Stack<Integer> polynomialReference = new Stack<Integer>();
-    private Integer[] monomialReference = new Integer[2];
+    private Stack<Integer[]> polynomialReference = new Stack<Integer[]>();
+    private Integer[] monomialReference;
+    private Integer currentDepth;
     
     public Pass1Visitor()
     {
         // Create and initialize the symbol table stack.
         symTabStack = SymTabFactory.createSymTabStack();
         Predefined.initialize(symTabStack);
+        currentDepth = 1;
     }
     
     public PrintWriter getAssemblyFile() { return jFile; }
@@ -176,11 +178,9 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 	@Override 
 	public Integer visitMonomial(PSLParser.MonomialContext ctx) { 
 		System.out.println("monomial");
+		monomialReference = new Integer[2];
 		monomialReference[0] = 1;
 		monomialReference[1] = 1;
-		
-		System.out.println("Depth: " + ctx.depth());
-		
 		
 		return visitChildren(ctx); 
 	}
@@ -191,8 +191,8 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 		ctx.type = Predefined.integerType;
 		monomialReference[0] = Integer.parseInt(ctx.getText());
 		monomialReference[1] = 0;
-		System.out.println("Coefficient: " + monomialReference[0]);
-		System.out.println("Power: " + monomialReference[1]);
+		System.out.println("Add to poly... " + monomialReference[0] + "x^" + monomialReference[1]);
+		polynomialReference.push(monomialReference);
         return visitChildren(ctx); 
 	}
 	
@@ -200,15 +200,34 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 	public Integer visitCoeficient(PSLParser.CoeficientContext ctx) { 
 		System.out.println("coeficient");
 		monomialReference[0] = Integer.parseInt(ctx.getText());
-		System.out.println("Changed Coefficient: " + monomialReference[0]);
+		System.out.println("Add to poly... " + monomialReference[0] + "x^" + monomialReference[1]);
+		polynomialReference.push(monomialReference);
+		currentDepth = ctx.depth();
 		return visitChildren(ctx); 
 	}
 
 	@Override 
 	public Integer visitPower(PSLParser.PowerContext ctx) { 
 		System.out.println("power");
+		if (ctx.depth() == currentDepth) {
+			System.out.println("Fixing poly...");
+			polynomialReference.pop();
+		}
 		monomialReference[1] = Integer.parseInt(ctx.getText());
-		System.out.println("Changed Power: " + monomialReference[1]);
+		System.out.println("Add to poly... " + monomialReference[0] + "x^" + monomialReference[1]);
+		polynomialReference.push(monomialReference);
+		
+		
+		if (ctx.depth() == 15) {
+			System.out.println("Printing whole polynomial");
+			Integer s = polynomialReference.size();
+			for (Integer i=0; i<s; i++) {
+				Integer[] temp = new Integer[2];
+				temp = polynomialReference.pop();
+				System.out.println("Index: " + i + " " + temp[0] + "x^" + temp[1]);
+			}
+		}
+		
 		return visitChildren(ctx); 
 	}
 
