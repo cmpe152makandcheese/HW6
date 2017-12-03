@@ -10,14 +10,11 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 	
 	String programName;
     private PrintWriter jFile;
-    private Stack<Integer[]> polynomialReference = new Stack<Integer[]>();
     private Integer[] monomialReference;
-    private Integer currentDepth;
     
     public Pass2Visitor(PrintWriter jFile)
     {
         this.jFile = jFile;
-        currentDepth = 1;
     }
     
 	@Override 
@@ -95,22 +92,17 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
         String op = ctx.ADD_OP().getText();
         String opcode;	
         
-        // TODO: This is probably wrong, needs to be changed to custom add 
-        //       not just assembly add
         if (op.equals("+!")) {
-            opcode = polynomialMode ? "iadd"
+            opcode = polynomialMode ? "add_polynomial"
                    :                  "????";
         }
         else {
-            opcode = polynomialMode ? "isub"
+            opcode = polynomialMode ? "sub_polynomial"
                    :              	  "????";
         }
         
-        // TODO: Remove later
-//        jFile.println("THIS EXPR IS WRONG :)");
-        
         // Emit an add or subtract instruction.
-        jFile.println("\t" + opcode);
+        jFile.println("\tinvokestatic PSL/" + opcode + "([I[I)[I");
         
         return value; 
     }

@@ -77,6 +77,8 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
         jFile.println(".field private static temp1 [I");
         
         // Global function
+        // Print polynomial function
+        jFile.println();
         jFile.println(".method public static print_array([I)V");
         jFile.println("  .limit stack 4");
         jFile.println("  .limit locals 2");
@@ -172,6 +174,88 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
         jFile.println("  ; frame bytes: 250 0 5 ");
         jFile.println("  .stack ");
         jFile.println("    offset 80");
+        jFile.println("    .end stack");
+        jFile.println(".end method");
+        
+        // Add polynomial function
+        jFile.println();
+        jFile.println(".method public static add_polynomial([I[I)[I");
+        jFile.println("  .limit stack 5");
+        jFile.println("  .limit locals 4");
+        jFile.println("  .line 25");
+        jFile.println("  0: bipush 10");
+        jFile.println("  2: newarray int");
+        jFile.println("  4: astore_2");
+        jFile.println("  .line 26");
+        jFile.println("  5: iconst_0");
+        jFile.println("  6: istore_3");
+        jFile.println("Label7:");
+        jFile.println("  7: iload_3");
+        jFile.println("  8: bipush 10");
+        jFile.println("  10: if_icmpge Label23");
+        jFile.println("  .line 27");
+        jFile.println("  13: aload_2");
+        jFile.println("  14: iload_3");
+        jFile.println("  15: iconst_0");
+        jFile.println("  16: iastore");
+        jFile.println("  .line 26");
+        jFile.println("  17: iinc 3 1");
+        jFile.println("  20: goto Label7");
+        jFile.println("Label23:");
+        jFile.println("  .line 30");
+        jFile.println("  23: iconst_0");
+        jFile.println("  24: istore_3");
+        jFile.println("Label25:");
+        jFile.println("  25: iload_3");
+        jFile.println("  26: bipush 10");
+        jFile.println("  28: if_icmpge Label47");
+        jFile.println("  .line 31");
+        jFile.println("  31: aload_2");
+        jFile.println("  32: iload_3");
+        jFile.println("  33: aload_0");
+        jFile.println("  34: iload_3");
+        jFile.println("  35: iaload");
+        jFile.println("  36: aload_1");
+        jFile.println("  37: iload_3");
+        jFile.println("  38: iaload");
+        jFile.println("  39: iadd");
+        jFile.println("  40: iastore");
+        jFile.println("  .line 30");
+        jFile.println("  41: iinc 3 1");
+        jFile.println("  44: goto Label25");
+        jFile.println("Label47:");
+        jFile.println("  .line 33");
+        jFile.println("  47: aload_2");
+        jFile.println("  48: areturn");
+        jFile.println("  ; append_frame (frameNumber = 0)");
+        jFile.println("  ; frame_type = 253, offset_delta = 7");
+        jFile.println("  ; frame bytes: 253 0 7 7 0 13 1 ");
+        jFile.println("  .stack ");
+        jFile.println("    offset 7");
+        jFile.println("    locals Object [I");
+        jFile.println("    locals Integer");
+        jFile.println("    .end stack");
+        jFile.println("  ; chop_frame (frameNumber = 1)");
+        jFile.println("  ; frame_type = 250, offset_delta = 15");
+        jFile.println("  ; frame bytes: 250 0 15 ");
+        jFile.println("  .stack ");
+        jFile.println("    offset 23");
+        jFile.println("    locals Object [I");
+        jFile.println("    .end stack");
+        jFile.println("  ; append_frame (frameNumber = 2)");
+        jFile.println("  ; frame_type = 252, offset_delta = 1");
+        jFile.println("  ; frame bytes: 252 0 1 1 ");
+        jFile.println("  .stack ");
+        jFile.println("    offset 25");
+        jFile.println("    locals Object [I");
+        jFile.println("    locals Integer");
+        jFile.println("    .end stack");
+        jFile.println("  ; chop_frame (frameNumber = 3)");
+        jFile.println("  ; frame_type = 250, offset_delta = 21");
+        jFile.println("  ; frame bytes: 250 0 21 ");
+        jFile.println("  .stack ");
+        jFile.println("    offset 47");
+        jFile.println("    locals Object [I");
         jFile.println("    .end stack");
         jFile.println(".end method");
         
@@ -284,43 +368,8 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 	}
 
 	@Override 
-	public Integer visitStmt(PSLParser.StmtContext ctx) {
-		return visitChildren(ctx);
-	}
-	
-	@Override 
-	public Integer visitCompound_stmt(PSLParser.Compound_stmtContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	@Override 
-	public Integer visitStmt_list(PSLParser.Stmt_listContext ctx) { 
-		return visitChildren(ctx);
-	}
-
-	@Override 
-	public Integer visitAssignment_stmt(PSLParser.Assignment_stmtContext ctx) { 
-		return visitChildren(ctx); 
-	}
-
-	@Override 
-	public Integer visitOrder_stmt(PSLParser.Order_stmtContext ctx) { 
-		return visitChildren(ctx); 
-	}
-
-	@Override 
-	public Integer visitVariable(PSLParser.VariableContext ctx) { 
-		return visitChildren(ctx); 
-	}
-
-	@Override 
 	public Integer visitPolynomialExpr(PSLParser.PolynomialExprContext ctx) {
 		ctx.type = Predefined.polynomialType;
-		return visitChildren(ctx); 
-	}
-
-	@Override 
-	public Integer visitMonomial(PSLParser.MonomialContext ctx) { 
 		return visitChildren(ctx); 
 	}
 

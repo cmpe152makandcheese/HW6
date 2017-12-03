@@ -1,6 +1,10 @@
 p1 -> polynomial ;)
+p2 -> polynomial ;)
+p3 -> polynomial ;)
 
 START
-	@p1 =! x^5 + 2x^3 + x^2 + 4 ;)
-	x^7 + 2x + 2 + 3x^3 PRINT ;)
+	@p1 =! x^5 + 4 ;)
+	@p2 =! 2x^3 + 3x^2 ;)
+	@p3 =! @p1 +! @p2 ;)
+	@p3 PRINT ;)
 FINISH

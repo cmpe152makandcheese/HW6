@@ -7,7 +7,16 @@
 ; p1->polynomial;)
 
 .field private static p1 [I
+
+; p2->polynomial;)
+
+.field private static p2 [I
+
+; p3->polynomial;)
+
+.field private static p3 [I
 .field private static temp1 [I
+
 .method public static print_array([I)V
   .limit stack 4
   .limit locals 2
@@ -107,6 +116,86 @@ Label88:
     .end stack
 .end method
 
+.method public static add_polynomial([I[I)[I
+  .limit stack 5
+  .limit locals 4
+  .line 25
+  0: bipush 10
+  2: newarray int
+  4: astore_2
+  .line 26
+  5: iconst_0
+  6: istore_3
+Label7:
+  7: iload_3
+  8: bipush 10
+  10: if_icmpge Label23
+  .line 27
+  13: aload_2
+  14: iload_3
+  15: iconst_0
+  16: iastore
+  .line 26
+  17: iinc 3 1
+  20: goto Label7
+Label23:
+  .line 30
+  23: iconst_0
+  24: istore_3
+Label25:
+  25: iload_3
+  26: bipush 10
+  28: if_icmpge Label47
+  .line 31
+  31: aload_2
+  32: iload_3
+  33: aload_0
+  34: iload_3
+  35: iaload
+  36: aload_1
+  37: iload_3
+  38: iaload
+  39: iadd
+  40: iastore
+  .line 30
+  41: iinc 3 1
+  44: goto Label25
+Label47:
+  .line 33
+  47: aload_2
+  48: areturn
+  ; append_frame (frameNumber = 0)
+  ; frame_type = 253, offset_delta = 7
+  ; frame bytes: 253 0 7 7 0 13 1 
+  .stack 
+    offset 7
+    locals Object [I
+    locals Integer
+    .end stack
+  ; chop_frame (frameNumber = 1)
+  ; frame_type = 250, offset_delta = 15
+  ; frame bytes: 250 0 15 
+  .stack 
+    offset 23
+    locals Object [I
+    .end stack
+  ; append_frame (frameNumber = 2)
+  ; frame_type = 252, offset_delta = 1
+  ; frame bytes: 252 0 1 1 
+  .stack 
+    offset 25
+    locals Object [I
+    locals Integer
+    .end stack
+  ; chop_frame (frameNumber = 3)
+  ; frame_type = 250, offset_delta = 21
+  ; frame bytes: 250 0 21 
+  .stack 
+    offset 47
+    locals Object [I
+    .end stack
+.end method
+
 .method public <init>()V
 
 	aload_0
@@ -128,7 +217,7 @@ Label88:
 	invokenonvirtual PascalTextIn/<init>()V
 	putstatic        PSL/_standardIn LPascalTextIn;
 
-; @p1=!x^5+2x^3+x^2+4;)
+; @p1=!x^5+4;)
 
 	bipush 10	
 	newarray int	
@@ -138,42 +227,38 @@ Label88:
 	bipush 1	
 	iastore	
 	getstatic PSL/temp1 [I	
-	bipush 3	
-	bipush 2	
-	iastore	
-	getstatic PSL/temp1 [I	
-	bipush 2	
-	bipush 1	
-	iastore	
-	getstatic PSL/temp1 [I	
 	bipush 0	
 	bipush 4	
 	iastore	
 	getstatic PSL/temp1 [I	
 	putstatic	PSL/p1 [I
 
-; x^7+2x+2+3x^3PRINT;)
+; @p2=!2x^3+3x^2;)
 
 	bipush 10	
 	newarray int	
 	putstatic    PSL/temp1 [I	
 	getstatic PSL/temp1 [I	
-	bipush 7	
-	bipush 1	
-	iastore	
-	getstatic PSL/temp1 [I	
-	bipush 1	
+	bipush 3	
 	bipush 2	
 	iastore	
 	getstatic PSL/temp1 [I	
-	bipush 0	
 	bipush 2	
-	iastore	
-	getstatic PSL/temp1 [I	
-	bipush 3	
 	bipush 3	
 	iastore	
 	getstatic PSL/temp1 [I	
+	putstatic	PSL/p2 [I
+
+; @p3=!@p1+!@p2;)
+
+	getstatic	PSL/p1 [I
+	getstatic	PSL/p2 [I
+	invokestatic PSL/add_polynomial([I[I)[I
+	putstatic	PSL/p3 [I
+
+; @p3PRINT;)
+
+	getstatic	PSL/p3 [I
 	invokestatic PSL/print_array([I)V	
 
 	getstatic     PSL/_runTimer LRunTimer;
