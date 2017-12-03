@@ -177,7 +177,6 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 
 	@Override 
 	public Integer visitMonomial(PSLParser.MonomialContext ctx) { 
-		System.out.println("monomial: " + ctx.depth());
 		monomialReference = new Integer[2];
 		monomialReference[0] = 1;
 		monomialReference[1] = 1;
@@ -207,8 +206,6 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 			// Ignore
 		}
 		
-		System.out.println(monomialReference[0] + "x^" + monomialReference[1]);
-
 		jFile.println("\tgetstatic PSL/temp1 [I\t");
 		jFile.println("\tbipush " + monomialReference[1] + "\t");
 		jFile.println("\tbipush " + monomialReference[0] + "\t");
@@ -229,18 +226,6 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 
 	@Override 
 	public Integer visitPower(PSLParser.PowerContext ctx) { 
-		return visitChildren(ctx); 
-	}
-	
-	// TODO: Remove this guy and fix it, tree should look at visitVariableExpr not this guy
-	@Override 
-	public Integer visitVariable(PSLParser.VariableContext ctx) { 
-		String variableName = ctx.IDENTIFIER().toString();
-		
-        // Emit a field get instruction.
-        jFile.println("\tgetstatic\t" + programName +
-                      "/" + variableName + " " + "[I");
-
 		return visitChildren(ctx); 
 	}
 

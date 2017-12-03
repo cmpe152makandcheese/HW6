@@ -439,7 +439,7 @@ public class PSLParser extends Parser {
 			setState(80);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__6) | (1L << START) | (1L << ORDER) | (1L << DERIVATIVE))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__6) | (1L << T__3) | (1L << T__1) | (1L << T__0) | (1L << START) | (1L << ORDER) | (1L << DERIVATIVE) | (1L << INTEGER) | (1L << X))) != 0)) {
 				{
 				{
 				setState(77); stmt();
@@ -590,8 +590,8 @@ public class PSLParser extends Parser {
 
 	public static class Print_stmtContext extends ParserRuleContext {
 		public TerminalNode COMMAND_END() { return getToken(PSLParser.COMMAND_END, 0); }
-		public VariableContext variable() {
-			return getRuleContext(VariableContext.class,0);
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
 		}
 		public PrintContext print() {
 			return getRuleContext(PrintContext.class,0);
@@ -613,7 +613,7 @@ public class PSLParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(97); variable();
+			setState(97); expr(0);
 			setState(98); print();
 			setState(99); match(COMMAND_END);
 			}
@@ -1221,8 +1221,8 @@ public class PSLParser extends Parser {
 		"\2\2\2QT\3\2\2\2RP\3\2\2\2RS\3\2\2\2S\23\3\2\2\2TR\3\2\2\2UV\5\34\17\2"+
 		"VW\7\4\2\2WX\5 \21\2XY\7\25\2\2Y\25\3\2\2\2Z[\7\f\2\2[\\\5(\25\2\\]\5"+
 		"\34\17\2]^\5\16\b\2^\27\3\2\2\2_`\7\r\2\2`a\5\34\17\2ab\7\25\2\2b\31\3"+
-		"\2\2\2cd\5\34\17\2de\5\36\20\2ef\7\25\2\2f\33\3\2\2\2gh\7\3\2\2hi\7\17"+
-		"\2\2i\35\3\2\2\2jk\7\16\2\2k\37\3\2\2\2lm\b\21\1\2mt\5\"\22\2nt\5\34\17"+
+		"\2\2\2cd\5 \21\2de\5\36\20\2ef\7\25\2\2f\33\3\2\2\2gh\7\3\2\2hi\7\17\2"+
+		"\2i\35\3\2\2\2jk\7\16\2\2k\37\3\2\2\2lm\b\21\1\2mt\5\"\22\2nt\5\34\17"+
 		"\2op\7\6\2\2pq\5 \21\2qr\7\7\2\2rt\3\2\2\2sl\3\2\2\2sn\3\2\2\2so\3\2\2"+
 		"\2t}\3\2\2\2uv\f\7\2\2vw\7\24\2\2w|\5 \21\bxy\f\6\2\2yz\7\23\2\2z|\5 "+
 		"\21\7{u\3\2\2\2{x\3\2\2\2|\177\3\2\2\2}{\3\2\2\2}~\3\2\2\2~!\3\2\2\2\177"+

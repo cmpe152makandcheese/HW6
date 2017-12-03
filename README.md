@@ -1,4 +1,3 @@
 # HW6
 
-java -jar Jasmin/jasmin.jar PSL.j
-java -cp .;PascalRTL.jar PSL
+Use `.\run_jfile.bat` to run the .j file
