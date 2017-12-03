@@ -66,7 +66,7 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 	public Integer visitAssignment_stmt(PSLParser.Assignment_stmtContext ctx) { 
         Integer value = visit(ctx.expr());
         
-        String typeIndicator = (ctx.expr().type == Predefined.polynomialType) ? "P"
+        String typeIndicator = (ctx.expr().type == Predefined.polynomialType) ? "[I"
                              :                                    "?";
         
         // Emit a field put instruction.
@@ -102,7 +102,7 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
         }
         
         // TODO: Remove later
-        jFile.println("THIS EXPR IS WRONG :)");
+//        jFile.println("THIS EXPR IS WRONG :)");
         
         // Emit an add or subtract instruction.
         jFile.println("\t" + opcode);
@@ -148,7 +148,7 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
         String variableName = ctx.variable().IDENTIFIER().toString();
         TypeSpec type = ctx.type;
         
-        String typeIndicator = (type == Predefined.polynomialType) ? "P"
+        String typeIndicator = (type == Predefined.polynomialType) ? "[I"
                              :                                    "?";
         
         // Emit a field get instruction.
@@ -160,22 +160,16 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 	
 	@Override 
 	public Integer visitConstant(PSLParser.ConstantContext ctx) {
-        // Emit a load constant instruction.
-        jFile.println("\tldc\t" + ctx.getText());
         return visitChildren(ctx); 
 	}
 	
 	@Override 
 	public Integer visitCoeficient(PSLParser.CoeficientContext ctx) { 
-        // Emit a load constant instruction.
-        jFile.println("\tldc\t" + ctx.getText());
 		return visitChildren(ctx); 
 	}
 
 	@Override 
 	public Integer visitPower(PSLParser.PowerContext ctx) { 
-        // Emit a load constant instruction.
-        jFile.println("\tldc\t" + ctx.getText());
 		return visitChildren(ctx); 
 	}
 

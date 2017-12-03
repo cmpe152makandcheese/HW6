@@ -3,6 +3,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import org.antlr.v4.runtime.misc.NotNull;
+
 import wci.intermediate.*;
 import wci.intermediate.symtabimpl.*;
 import wci.util.*;
@@ -116,7 +118,7 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
         
         if (typeName.equalsIgnoreCase("polynomial")) {
             type = Predefined.polynomialType;
-            typeIndicator = "P";
+            typeIndicator = "[I";
         }
         else {
             type = null;
@@ -214,7 +216,8 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 	}
 
 	@Override 
-	public Integer visitPolynomial(PSLParser.PolynomialContext ctx) {
+	public Integer visitPolynomialExpr(PSLParser.PolynomialExprContext ctx) {
+		ctx.type = Predefined.polynomialType;
 		return visitChildren(ctx); 
 	}
 
