@@ -75,7 +75,6 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
                              :                                    "?";
         
         // Emit a field put instruction.
-        jFile.println("\tgetstatic PSL/temp1 [I\t");
         jFile.println("\tputstatic\t" + programName
                            +  "/" + ctx.variable().IDENTIFIER().toString() 
                            + " " + typeIndicator);
@@ -172,6 +171,7 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 		jFile.println("\tbipush 10\t");
 		jFile.println("\tnewarray int\t");
 		jFile.println("\tputstatic    PSL/temp1 [I\t");
+		jFile.println("\tgetstatic PSL/temp1 [I\t");
 		return visitChildren(ctx); 
 	}
 
@@ -206,10 +206,10 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 			// Ignore
 		}
 		
-		jFile.println("\tgetstatic PSL/temp1 [I\t");
 		jFile.println("\tbipush " + monomialReference[1] + "\t");
 		jFile.println("\tbipush " + monomialReference[0] + "\t");
 		jFile.println("\tiastore\t");
+		jFile.println("\tgetstatic PSL/temp1 [I\t");
 		
 		return visitChildren(ctx); 
 	}

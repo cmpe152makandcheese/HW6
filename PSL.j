@@ -152,9 +152,28 @@ Label88:
 	getstatic PSL/temp1 [I	
 	putstatic	PSL/p1 [I
 
-; @p1PRINT;)
+; x^7+2x+2+3x^3PRINT;)
 
-	getstatic	PSL/p1 [I
+	bipush 10	
+	newarray int	
+	putstatic    PSL/temp1 [I	
+	getstatic PSL/temp1 [I	
+	bipush 7	
+	bipush 1	
+	iastore	
+	getstatic PSL/temp1 [I	
+	bipush 1	
+	bipush 2	
+	iastore	
+	getstatic PSL/temp1 [I	
+	bipush 0	
+	bipush 2	
+	iastore	
+	getstatic PSL/temp1 [I	
+	bipush 3	
+	bipush 3	
+	iastore	
+	getstatic PSL/temp1 [I	
 	invokestatic PSL/print_array([I)V	
 
 	getstatic     PSL/_runTimer LRunTimer;
