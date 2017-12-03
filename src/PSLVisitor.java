@@ -21,12 +21,6 @@ public interface PSLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDecl_list(@NotNull PSLParser.Decl_listContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PSLParser#assignment_stmt}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAssignment_stmt(@NotNull PSLParser.Assignment_stmtContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link PSLParser#constant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -38,12 +32,6 @@ public interface PSLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDecl(@NotNull PSLParser.DeclContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PSLParser#type_id}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitType_id(@NotNull PSLParser.Type_idContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PSLParser#sign}.
 	 * @param ctx the parse tree
@@ -63,13 +51,6 @@ public interface PSLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOrder_stmt(@NotNull PSLParser.Order_stmtContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code polynomialExpr}
-	 * labeled alternative in {@link PSLParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPolynomialExpr(@NotNull PSLParser.PolynomialExprContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code parenExpr}
 	 * labeled alternative in {@link PSLParser#expr}.
 	 * @param ctx the parse tree
@@ -83,12 +64,6 @@ public interface PSLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCompound_stmt(@NotNull PSLParser.Compound_stmtContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PSLParser#derivative_stmt}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDerivative_stmt(@NotNull PSLParser.Derivative_stmtContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code variableExpr}
 	 * labeled alternative in {@link PSLParser#expr}.
 	 * @param ctx the parse tree
@@ -101,25 +76,6 @@ public interface PSLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMonomial(@NotNull PSLParser.MonomialContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code addExpr}
-	 * labeled alternative in {@link PSLParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAddExpr(@NotNull PSLParser.AddExprContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PSLParser#polynomial}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPolynomial(@NotNull PSLParser.PolynomialContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PSLParser#variable}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVariable(@NotNull PSLParser.VariableContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code mulExpr}
 	 * labeled alternative in {@link PSLParser#expr}.
@@ -151,6 +107,56 @@ public interface PSLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPower(@NotNull PSLParser.PowerContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PSLParser#print_stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrint_stmt(@NotNull PSLParser.Print_stmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PSLParser#assignment_stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignment_stmt(@NotNull PSLParser.Assignment_stmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PSLParser#type_id}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitType_id(@NotNull PSLParser.Type_idContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code polynomialExpr}
+	 * labeled alternative in {@link PSLParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPolynomialExpr(@NotNull PSLParser.PolynomialExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PSLParser#derivative_stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDerivative_stmt(@NotNull PSLParser.Derivative_stmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code addExpr}
+	 * labeled alternative in {@link PSLParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAddExpr(@NotNull PSLParser.AddExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PSLParser#polynomial}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPolynomial(@NotNull PSLParser.PolynomialContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PSLParser#variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariable(@NotNull PSLParser.VariableContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PSLParser#stmt}.
 	 * @param ctx the parse tree

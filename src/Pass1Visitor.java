@@ -73,6 +73,9 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 	public Integer visitDecl_list(PSLParser.Decl_listContext ctx) { 
         Integer value = visitChildren(ctx); 
         
+        // Initialize temp variables
+        jFile.println(".field private static temp1 [I");
+        
         // Emit the class constructor.
         jFile.println();
         jFile.println(".method public <init>()V");

@@ -27,7 +27,7 @@ stmt_list : 		stmt ( stmt)* ;
 assignment_stmt : 	variable '=!' expr COMMAND_END;
 order_stmt : 		ORDER constant variable stmt;
 derivative_stmt: 	DERIVATIVE variable COMMAND_END;
-print_stmt:			PRINT variable COMMAND_END;
+print_stmt:			PRINT expr COMMAND_END;
 
 variable :		'@' IDENTIFIER ;
 

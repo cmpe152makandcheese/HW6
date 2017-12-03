@@ -75,6 +75,7 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
                              :                                    "?";
         
         // Emit a field put instruction.
+        jFile.println("\tgetstatic PSL/temp1 [I\t");
         jFile.println("\tputstatic\t" + programName
                            +  "/" + ctx.variable().IDENTIFIER().toString() 
                            + " " + typeIndicator);
@@ -170,6 +171,7 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 		// Push polynomial array to stack
 		jFile.println("\tbipush 10\t");
 		jFile.println("\tnewarray int\t");
+		jFile.println("\tputstatic    PSL/temp1 [I\t");
 		return visitChildren(ctx); 
 	}
 
@@ -206,9 +208,12 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 		}
 		
 		System.out.println(monomialReference[0] + "x^" + monomialReference[1]);
-		jFile.println("\ticonst_" + monomialReference[0] + "\t");
-		jFile.println("\ticonst_" + monomialReference[1] + "\t");
+
+		jFile.println("\tgetstatic PSL/temp1 [I\t");
+		jFile.println("\tbipush " + monomialReference[1] + "\t");
+		jFile.println("\tbipush " + monomialReference[0] + "\t");
 		jFile.println("\tiastore\t");
+		
 		return visitChildren(ctx); 
 	}
 
@@ -224,6 +229,23 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 
 	@Override 
 	public Integer visitPower(PSLParser.PowerContext ctx) { 
+		return visitChildren(ctx); 
+	}
+	
+	@Override 
+	public Integer visitPrint_stmt(PSLParser.Print_stmtContext ctx) { 
+		TypeSpec type = ctx.expr().type;
+		if (type == Predefined.polynomialType) {
+			jFile.println("\tgetstatic java/lang/System/out Ljava/io/PrintStream;\t");
+			jFile.println("\tnew       java/lang/StringBuilder\t");
+			jFile.println("\tdup\t");
+			jFile.println("\tldc \"Polynomial = \"\t");
+			jFile.println("\tinvokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V\t");
+			jFile.println("\ticonst_1\t");
+			jFile.println("\tinvokevirtual java/lang/StringBuilder/append(I)Ljava/lang/StringBuilder;\t");
+			jFile.println("\tinvokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;\t");
+			jFile.println("\tinvokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\t");
+		}
 		return visitChildren(ctx); 
 	}
 
