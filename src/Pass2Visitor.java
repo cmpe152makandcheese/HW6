@@ -1,4 +1,5 @@
 import java.io.PrintWriter;
+import java.util.Stack;
 
 import org.antlr.v4.runtime.misc.NotNull;
 
@@ -9,10 +10,14 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 	
 	String programName;
     private PrintWriter jFile;
+    private Stack<Integer[]> polynomialReference = new Stack<Integer[]>();
+    private Integer[] monomialReference;
+    private Integer currentDepth;
     
     public Pass2Visitor(PrintWriter jFile)
     {
         this.jFile = jFile;
+        currentDepth = 1;
     }
     
 	@Override 
@@ -159,12 +164,61 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
     }
 	
 	@Override 
+	public Integer visitPolynomialExpr(PSLParser.PolynomialExprContext ctx) {
+		ctx.type = Predefined.polynomialType;
+		
+		// Push polynomial array to stack
+		jFile.println("\tbipush 10\t");
+		jFile.println("\tnewarray int\t");
+		return visitChildren(ctx); 
+	}
+
+	@Override 
+	public Integer visitMonomial(PSLParser.MonomialContext ctx) { 
+		System.out.println("monomial: " + ctx.depth());
+		monomialReference = new Integer[2];
+		monomialReference[0] = 1;
+		monomialReference[1] = 1;
+		
+		// Check if coeficient child exists
+		try {
+			monomialReference[0] = Integer.parseInt(ctx.coeficient().getText());
+		}
+		catch (java.lang.NullPointerException e) {
+			// Ignore
+		}
+		
+		// Check if power child exists
+		try {
+			monomialReference[1] = Integer.parseInt(ctx.power().getText());
+		}
+		catch (java.lang.NullPointerException e) {
+			// Ignore
+		}
+		
+		// Check if constant child exists
+		try {
+			monomialReference[0] = Integer.parseInt(ctx.constant().getText());
+			monomialReference[1] = 0;
+		}
+		catch (java.lang.NullPointerException e) {
+			// Ignore
+		}
+		
+		System.out.println(monomialReference[0] + "x^" + monomialReference[1]);
+		jFile.println("\ticonst_" + monomialReference[0] + "\t");
+		jFile.println("\ticonst_" + monomialReference[1] + "\t");
+		jFile.println("\tiastore\t");
+		return visitChildren(ctx); 
+	}
+
+	@Override 
 	public Integer visitConstant(PSLParser.ConstantContext ctx) {
         return visitChildren(ctx); 
 	}
 	
 	@Override 
-	public Integer visitCoeficient(PSLParser.CoeficientContext ctx) { 
+	public Integer visitCoeficient(PSLParser.CoeficientContext ctx) {
 		return visitChildren(ctx); 
 	}
 

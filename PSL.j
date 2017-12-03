@@ -7,14 +7,7 @@
 ; p1->polynomial;)
 
 .field private static p1 [I
-
-; p2->polynomial;)
-
-.field private static p2 [I
-
-; p3->polynomial;)
-
-.field private static p3 [I
+.field private static temp1 [I
 
 .method public <init>()V
 
@@ -37,11 +30,29 @@
 	invokenonvirtual PascalTextIn/<init>()V
 	putstatic        PSL/_standardIn LPascalTextIn;
 
-; @p3=!x^2+!@p2;)
+; @p1=!x^2+2x+3+x;)
 
-	;getstatic	PSL/p2 [I
-	;iadd
-	;putstatic	PSL/p3 [I
+	bipush 10	
+	newarray int	
+	putstatic	PSL/temp1 [I
+	getstatic PSL/temp1 [I
+	iconst_1	
+	iconst_2	
+	iastore
+	getstatic PSL/temp1 [I	
+	iconst_2	
+	iconst_1	
+	iastore
+	getstatic PSL/temp1 [I	
+	iconst_3	
+	iconst_0	
+	iastore
+	getstatic PSL/temp1 [I	
+	iconst_1	
+	iconst_1	
+	iastore
+	getstatic PSL/temp1 [I
+	putstatic	PSL/p1 [I
 
 	getstatic     PSL/_runTimer LRunTimer;
 	invokevirtual RunTimer.printElapsedTime()V

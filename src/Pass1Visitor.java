@@ -18,16 +18,12 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
     private SymTabEntry programId;
     private SymTabEntry variableIdReference;
     private PrintWriter jFile;
-    private Stack<Integer[]> polynomialReference = new Stack<Integer[]>();
-    private Integer[] monomialReference;
-    private Integer currentDepth;
     
     public Pass1Visitor()
     {
         // Create and initialize the symbol table stack.
         symTabStack = SymTabFactory.createSymTabStack();
         Predefined.initialize(symTabStack);
-        currentDepth = 1;
     }
     
     public PrintWriter getAssemblyFile() { return jFile; }
@@ -223,40 +219,24 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 
 	@Override 
 	public Integer visitMonomial(PSLParser.MonomialContext ctx) { 
-		monomialReference = new Integer[2];
-		monomialReference[0] = 1;
-		monomialReference[1] = 1;
-		
 		return visitChildren(ctx); 
 	}
 
 	@Override 
 	public Integer visitConstant(PSLParser.ConstantContext ctx) {
 		ctx.type = Predefined.integerType;
-		monomialReference[0] = Integer.parseInt(ctx.getText());
-		monomialReference[1] = 0;
-		polynomialReference.push(monomialReference);
         return visitChildren(ctx); 
 	}
 	
 	@Override 
 	public Integer visitCoeficient(PSLParser.CoeficientContext ctx) { 
 		ctx.type = Predefined.integerType;
-		monomialReference[0] = Integer.parseInt(ctx.getText());
-		polynomialReference.push(monomialReference);
-		currentDepth = ctx.depth();
 		return visitChildren(ctx); 
 	}
 
 	@Override 
 	public Integer visitPower(PSLParser.PowerContext ctx) { 
 		ctx.type = Predefined.integerType;
-		if (ctx.depth() == currentDepth) {
-			polynomialReference.pop();
-		}
-		monomialReference[1] = Integer.parseInt(ctx.getText());
-		polynomialReference.push(monomialReference);
-		
 		return visitChildren(ctx); 
 	}
 
