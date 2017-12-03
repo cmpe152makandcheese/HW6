@@ -27,9 +27,10 @@ stmt_list : 		stmt ( stmt)* ;
 assignment_stmt : 	variable '=!' expr COMMAND_END;
 order_stmt : 		ORDER constant variable stmt;
 derivative_stmt: 	DERIVATIVE variable COMMAND_END;
-print_stmt:			PRINT variable NOW COMMAND_END;
+print_stmt:			variable print COMMAND_END;
 
 variable :		'@' IDENTIFIER ;
+print: 			PRINT ;
 
 expr locals [ TypeSpec type = null ]
 	 :			expr MUL_OP expr   # mulExpr
@@ -70,7 +71,6 @@ FINISH:			'FINISH' ;
 ORDER:			'ORDER' ;
 DERIVATIVE: 	'DERIVATIVE' ;
 PRINT:			'PRINT';
-NOW: 			'NOW';
 
 IDENTIFIER :	[a-wyzA-WYZ][a-zA-Z0-9]* ;
 INTEGER :		[0-9]+ ;

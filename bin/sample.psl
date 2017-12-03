@@ -2,5 +2,5 @@ p1 -> polynomial ;)
 
 START
 	@p1 =! x^5 + 2x^3 + x^2 + 4 ;)
-	PRINT @p1 NOW
+	@p1 PRINT ;)
 FINISH

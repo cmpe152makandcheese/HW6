@@ -160,7 +160,7 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
         // Emit a field get instruction.
         jFile.println("\tgetstatic\t" + programName +
                       "/" + variableName + " " + typeIndicator);
-        
+
         return visitChildren(ctx); 	
     }
 	
@@ -232,21 +232,23 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 		return visitChildren(ctx); 
 	}
 	
+	// TODO: Remove this guy and fix it, tree should look at visitVariableExpr not this guy
 	@Override 
-	public Integer visitPrint_stmt(PSLParser.Print_stmtContext ctx) { 
-		TypeSpec type = ctx.expr().type;
-		if (type == Predefined.polynomialType) {
-			jFile.println("\tgetstatic java/lang/System/out Ljava/io/PrintStream;\t");
-			jFile.println("\tnew       java/lang/StringBuilder\t");
-			jFile.println("\tdup\t");
-			jFile.println("\tldc \"Polynomial = \"\t");
-			jFile.println("\tinvokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V\t");
-			jFile.println("\ticonst_1\t");
-			jFile.println("\tinvokevirtual java/lang/StringBuilder/append(I)Ljava/lang/StringBuilder;\t");
-			jFile.println("\tinvokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;\t");
-			jFile.println("\tinvokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\t");
-		}
+	public Integer visitVariable(PSLParser.VariableContext ctx) { 
+		String variableName = ctx.IDENTIFIER().toString();
+		
+        // Emit a field get instruction.
+        jFile.println("\tgetstatic\t" + programName +
+                      "/" + variableName + " " + "[I");
+
 		return visitChildren(ctx); 
 	}
+
+	@Override 
+	public Integer visitPrint(PSLParser.PrintContext ctx) { 
+		jFile.println("\tinvokestatic PSL/print_array([I)V\t");
+		return visitChildren(ctx); 
+	}
+
 
 }

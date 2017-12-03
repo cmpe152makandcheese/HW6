@@ -139,6 +139,12 @@ public interface PSLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDerivative_stmt(@NotNull PSLParser.Derivative_stmtContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PSLParser#print}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrint(@NotNull PSLParser.PrintContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code addExpr}
 	 * labeled alternative in {@link PSLParser#expr}.
 	 * @param ctx the parse tree
