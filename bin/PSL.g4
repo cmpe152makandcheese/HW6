@@ -10,7 +10,7 @@ block : decl_list compound_stmt ;
 
 
 decl_list :		decl ( decl )*  ;
-decl :			var_id '->' type_id ';)';
+decl :			var_id '->' type_id COMMAND_END;
 var_id :		IDENTIFIER ;
 type_id :		IDENTIFIER ;
 
@@ -19,13 +19,15 @@ stmt :			assignment_stmt
 	 |			compound_stmt 
 	 |			order_stmt
 	 |			derivative_stmt
+	 |			print_stmt
 	 ;
 
-compound_stmt :	START stmt_list FINISH ;
-stmt_list : 	stmt ( stmt)* ; 
-assignment_stmt : variable '=!' expr ';)';
-order_stmt : 	ORDER constant variable stmt;
-derivative_stmt: DERIVATIVE variable;
+compound_stmt :		START stmt_list FINISH ;
+stmt_list : 		stmt ( stmt)* ; 
+assignment_stmt : 	variable '=!' expr COMMAND_END;
+order_stmt : 		ORDER constant variable stmt;
+derivative_stmt: 	DERIVATIVE variable COMMAND_END;
+print_stmt:			PRINT variable COMMAND_END;
 
 variable :		'@' IDENTIFIER ;
 
@@ -67,6 +69,7 @@ START:			'START' ;
 FINISH:			'FINISH' ;
 ORDER:			'ORDER' ;
 DERIVATIVE: 	'DERIVATIVE' ;
+PRINT:			'PRINT';
 
 IDENTIFIER :	[a-wyzA-WYZ][a-zA-Z0-9]* ;
 INTEGER :		[0-9]+ ;
@@ -75,6 +78,8 @@ POWER:			'^' ;
 
 ADD_OP :		'+!' ;
 MUL_OP :		'*!' ;
+
+COMMAND_END:	';)';
 
 
 NEWLINE :		'\r'? '\n' -> skip ;
