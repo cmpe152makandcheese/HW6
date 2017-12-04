@@ -256,7 +256,7 @@ Label47:
 	invokestatic PSL/add_polynomial([I[I)[I
 	putstatic	PSL/p3 [I
 
-; @p3PRINT;)
+; PRINT@p3;)
 
 	getstatic	PSL/p3 [I
 	invokestatic PSL/print_array([I)V	

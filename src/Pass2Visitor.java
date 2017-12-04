@@ -80,6 +80,18 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
     }
 	
 	@Override 
+	public Integer visitPrint_stmt(PSLParser.Print_stmtContext ctx) { 
+		Integer value = visit(ctx.expr());
+
+		if (ctx.expr().type == Predefined.polynomialType) {
+			jFile.println("\tinvokestatic PSL/print_array([I)V\t");
+		}
+		
+		return value; 
+	}
+
+	
+	@Override 
 	public Integer visitAddExpr(PSLParser.AddExprContext ctx) { 
         Integer value = visitChildren(ctx);
         
@@ -218,12 +230,6 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 
 	@Override 
 	public Integer visitPower(PSLParser.PowerContext ctx) { 
-		return visitChildren(ctx); 
-	}
-
-	@Override 
-	public Integer visitPrint(PSLParser.PrintContext ctx) { 
-		jFile.println("\tinvokestatic PSL/print_array([I)V\t");
 		return visitChildren(ctx); 
 	}
 
