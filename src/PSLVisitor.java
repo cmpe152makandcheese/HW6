@@ -114,6 +114,12 @@ public interface PSLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrint_stmt(@NotNull PSLParser.Print_stmtContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PSLParser#print_boolean_stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrint_boolean_stmt(@NotNull PSLParser.Print_boolean_stmtContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PSLParser#assignment_stmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

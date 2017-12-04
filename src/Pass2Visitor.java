@@ -11,10 +11,12 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 	String programName;
     private PrintWriter jFile;
     private Integer[] monomialReference;
+    private Integer orderCount;
     
     public Pass2Visitor(PrintWriter jFile)
     {
         this.jFile = jFile;
+        orderCount = 0;
     }
     
 	@Override 
@@ -89,7 +91,51 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 		
 		return value; 
 	}
+	
+	@Override 
+	public Integer visitPrint_boolean_stmt(PSLParser.Print_boolean_stmtContext ctx) { 
+		jFile.println("\tinvokestatic PSL/print_boolean(I)V\t");
+		
+		return visitChildren(ctx);
+	}
+	
+	@Override 
+	public Integer visitOrder_stmt(PSLParser.Order_stmtContext ctx) {
+		orderCount++;
+		visit(ctx.expr(0));
+		visit(ctx.expr(1));
+		
+		jFile.println("\tinvokestatic PSL/order([I[I)I\t");
+		jFile.println("\tifeq LabelExitOrder" + orderCount + "\t");
+		Integer value = visit(ctx.compound_stmt());
+		jFile.println("\tLabelExitOrder" + orderCount + ":\t");
+		
+		return value;
+	}
 
+
+	@Override 
+	public Integer visitDerivative_stmt(PSLParser.Derivative_stmtContext ctx) { 
+		Integer value = visit(ctx.variable());
+		
+		String typeIndicator = (ctx.variable().type == Predefined.polynomialType) ? "[I"
+                :                                    "?";
+		
+		if (ctx.variable().type == Predefined.polynomialType) {
+			// Put variable into stack
+	        jFile.println("\tgetstatic\t" + programName
+	                           +  "/" + ctx.variable().IDENTIFIER().toString() 
+	                           + " " + typeIndicator);
+			// Derive
+			jFile.println("\tinvokestatic PSL/derive([I)[I\t");
+			// Emit a field put instruction.
+	        jFile.println("\tputstatic\t" + programName
+	                           +  "/" + ctx.variable().IDENTIFIER().toString() 
+	                           + " " + typeIndicator);
+		}
+		
+		return value;
+	}
 	
 	@Override 
 	public Integer visitAddExpr(PSLParser.AddExprContext ctx) { 

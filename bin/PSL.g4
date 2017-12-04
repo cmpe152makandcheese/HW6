@@ -20,16 +20,20 @@ stmt :			assignment_stmt
 	 |			order_stmt
 	 |			derivative_stmt
 	 |			print_stmt
+	 |			print_boolean_stmt
 	 ;
 
 compound_stmt :		START stmt_list FINISH ;
 stmt_list : 		stmt ( stmt)* ; 
 assignment_stmt : 	variable '=!' expr COMMAND_END;
-order_stmt : 		ORDER constant variable stmt;
+order_stmt : 		ORDER expr expr compound_stmt;
 derivative_stmt: 	DERIVATIVE variable COMMAND_END;
 print_stmt:			PRINT expr COMMAND_END;
+print_boolean_stmt:	PRINT_BOOLEAN COMMAND_END;
 
-variable :		'@' IDENTIFIER ;
+variable locals [ TypeSpec type = null ]
+		:    '@' IDENTIFIER 
+		;
 
 expr locals [ TypeSpec type = null ]
 	 :			expr MUL_OP expr   # mulExpr
@@ -70,6 +74,7 @@ FINISH:			'FINISH' ;
 ORDER:			'ORDER' ;
 DERIVATIVE: 	'DERIVATIVE' ;
 PRINT:			'PRINT';
+PRINT_BOOLEAN:	'PRINT_BOOLEAN' ;
 
 IDENTIFIER :	[a-wyzA-WYZ][a-zA-Z0-9]* ;
 INTEGER :		[0-9]+ ;

@@ -133,6 +133,13 @@ public class PSLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements PS
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitPrint_boolean_stmt(@NotNull PSLParser.Print_boolean_stmtContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitAssignment_stmt(@NotNull PSLParser.Assignment_stmtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
