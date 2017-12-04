@@ -11,6 +11,10 @@
 ; p2->polynomial;)
 
 .field private static p2 [I
+
+; p3->polynomial;)
+
+.field private static p3 [I
 .field private static temp1 [I
 .method public static order_helper([I)I
   .limit stack 2
@@ -641,14 +645,14 @@ Label37:
 	invokenonvirtual PascalTextIn/<init>()V
 	putstatic        PSL/_standardIn LPascalTextIn;
 
-; @p1=!x^2+2;)
+; @p1=!2x^3+2;)
 
 	bipush 10	
 	newarray int	
 	putstatic    PSL/temp1 [I	
 	getstatic PSL/temp1 [I	
+	bipush 3	
 	bipush 2	
-	bipush 1	
 	iastore	
 	getstatic PSL/temp1 [I	
 	bipush 0	
@@ -657,35 +661,57 @@ Label37:
 	getstatic PSL/temp1 [I	
 	putstatic	PSL/p1 [I
 
-; ORDER3x^3START@p2=!2;)PRINT@p2;)FINISH
+; PRINT@p1;)
+
+	getstatic	PSL/p1 [I
+	invokestatic PSL/print_array([I)V	
+
+; REPEAT2STARTDERIVATIVE@p1;)PRINT@p1;)FINISH
+
+	bipush 2	
+	LabelBeginRepeat1:	
+	dup	
+	ifeq LabelExitRepeat1	
+
+; DERIVATIVE@p1;)
+
+	getstatic	PSL/p1 [I
+	invokestatic PSL/derive([I)[I	
+	putstatic	PSL/p1 [I
+
+; PRINT@p1;)
+
+	getstatic	PSL/p1 [I
+	invokestatic PSL/print_array([I)V	
+	bipush 1	
+	isub	
+	goto LabelBeginRepeat1	
+	LabelExitRepeat1:	
+
+; @p2=!x^7+2x^6+10x^4+3x^2+9;)
 
 	bipush 10	
 	newarray int	
 	putstatic    PSL/temp1 [I	
 	getstatic PSL/temp1 [I	
-	bipush 0	
-	bipush 3	
-	iastore	
-	getstatic PSL/temp1 [I	
-	bipush 10	
-	newarray int	
-	putstatic    PSL/temp1 [I	
-	getstatic PSL/temp1 [I	
-	bipush 3	
+	bipush 7	
 	bipush 1	
 	iastore	
 	getstatic PSL/temp1 [I	
-	invokestatic PSL/order([I[I)I	
-	ifeq LabelExitOrder1	
-
-; @p2=!2;)
-
+	bipush 6	
+	bipush 2	
+	iastore	
+	getstatic PSL/temp1 [I	
+	bipush 4	
 	bipush 10	
-	newarray int	
-	putstatic    PSL/temp1 [I	
+	iastore	
+	getstatic PSL/temp1 [I	
+	bipush 2	
+	bipush 3	
+	iastore	
 	getstatic PSL/temp1 [I	
 	bipush 0	
-	bipush 2	
+	bipush 9	
 	iastore	
 	getstatic PSL/temp1 [I	
 	putstatic	PSL/p2 [I
@@ -694,7 +720,64 @@ Label37:
 
 	getstatic	PSL/p2 [I
 	invokestatic PSL/print_array([I)V	
+
+; ORDER8@p2STARTPRINT@p2;)FINISH
+
+	bipush 10	
+	newarray int	
+	putstatic    PSL/temp1 [I	
+	getstatic PSL/temp1 [I	
+	bipush 0	
+	bipush 8	
+	iastore	
+	getstatic PSL/temp1 [I	
+	getstatic	PSL/p2 [I
+	invokestatic PSL/order([I[I)I	
+	ifeq LabelExitOrder1	
+
+; PRINT@p2;)
+
+	getstatic	PSL/p2 [I
+	invokestatic PSL/print_array([I)V	
 	LabelExitOrder1:	
+
+; ORDER3@p2STARTDERIVATIVE@p2;)FINISH
+
+	bipush 10	
+	newarray int	
+	putstatic    PSL/temp1 [I	
+	getstatic PSL/temp1 [I	
+	bipush 0	
+	bipush 3	
+	iastore	
+	getstatic PSL/temp1 [I	
+	getstatic	PSL/p2 [I
+	invokestatic PSL/order([I[I)I	
+	ifeq LabelExitOrder2	
+
+; DERIVATIVE@p2;)
+
+	getstatic	PSL/p2 [I
+	invokestatic PSL/derive([I)[I	
+	putstatic	PSL/p2 [I
+	LabelExitOrder2:	
+
+; PRINT@p2;)
+
+	getstatic	PSL/p2 [I
+	invokestatic PSL/print_array([I)V	
+
+; @p3=!@p1+!@p2;)
+
+	getstatic	PSL/p1 [I
+	getstatic	PSL/p2 [I
+	invokestatic PSL/add_polynomial([I[I)[I
+	putstatic	PSL/p3 [I
+
+; PRINT@p3;)
+
+	getstatic	PSL/p3 [I
+	invokestatic PSL/print_array([I)V	
 
 	getstatic     PSL/_runTimer LRunTimer;
 	invokevirtual RunTimer.printElapsedTime()V

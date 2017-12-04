@@ -21,15 +21,17 @@ stmt :			assignment_stmt
 	 |			derivative_stmt
 	 |			print_stmt
 	 |			print_boolean_stmt
+	 |			repeat_stmt
 	 ;
 
-compound_stmt :		START stmt_list FINISH ;
-stmt_list : 		stmt ( stmt)* ; 
-assignment_stmt : 	variable '=!' expr COMMAND_END;
-order_stmt : 		ORDER expr expr compound_stmt;
-derivative_stmt: 	DERIVATIVE variable COMMAND_END;
-print_stmt:			PRINT expr COMMAND_END;
-print_boolean_stmt:	PRINT_BOOLEAN COMMAND_END;
+compound_stmt :			START stmt_list FINISH ;
+stmt_list : 			stmt ( stmt)* ; 
+assignment_stmt : 		variable '=!' expr COMMAND_END;
+order_stmt : 			ORDER expr expr compound_stmt;
+derivative_stmt: 		DERIVATIVE variable COMMAND_END;
+print_stmt :			PRINT expr COMMAND_END;
+print_boolean_stmt :	PRINT_BOOLEAN COMMAND_END;
+repeat_stmt :			REPEAT constant compound_stmt;
 
 variable locals [ TypeSpec type = null ]
 		:    '@' IDENTIFIER 
@@ -75,6 +77,7 @@ ORDER:			'ORDER' ;
 DERIVATIVE: 	'DERIVATIVE' ;
 PRINT:			'PRINT';
 PRINT_BOOLEAN:	'PRINT_BOOLEAN' ;
+REPEAT:			'REPEAT' ;
 
 IDENTIFIER :	[a-wyzA-WYZ][a-zA-Z0-9]* ;
 INTEGER :		[0-9]+ ;

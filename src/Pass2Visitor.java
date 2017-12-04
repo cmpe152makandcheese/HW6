@@ -12,11 +12,13 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
     private PrintWriter jFile;
     private Integer[] monomialReference;
     private Integer orderCount;
+    private Integer repeatCount;
     
     public Pass2Visitor(PrintWriter jFile)
     {
         this.jFile = jFile;
         orderCount = 0;
+        repeatCount = 0;
     }
     
 	@Override 
@@ -109,6 +111,23 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 		jFile.println("\tifeq LabelExitOrder" + orderCount + "\t");
 		Integer value = visit(ctx.compound_stmt());
 		jFile.println("\tLabelExitOrder" + orderCount + ":\t");
+		
+		return value;
+	}
+	
+	@Override 
+	public Integer visitRepeat_stmt(PSLParser.Repeat_stmtContext ctx) { 
+		repeatCount++;
+		Integer constant = Integer.parseInt(ctx.constant().getText());
+		jFile.println("\tbipush " + constant + "\t");
+		jFile.println("\tLabelBeginRepeat" + repeatCount + ":\t");
+		jFile.println("\tdup\t");
+		jFile.println("\tifeq LabelExitRepeat" + repeatCount + "\t");
+		Integer value = visit(ctx.compound_stmt());
+		jFile.println("\tbipush 1\t");
+		jFile.println("\tisub\t");
+		jFile.println("\tgoto LabelBeginRepeat" + repeatCount + "\t");
+		jFile.println("\tLabelExitRepeat" + repeatCount + ":\t");
 		
 		return value;
 	}

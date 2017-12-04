@@ -121,6 +121,10 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
             type = Predefined.polynomialType;
             typeIndicator = "[I";
         }
+        else if (typeName.equalsIgnoreCase("constant")) {
+            type = Predefined.integerType;
+            typeIndicator = "I";
+        }
         else {
             type = null;
             typeIndicator = "?";
