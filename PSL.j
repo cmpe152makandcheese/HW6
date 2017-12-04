@@ -645,14 +645,14 @@ Label37:
 	invokenonvirtual PascalTextIn/<init>()V
 	putstatic        PSL/_standardIn LPascalTextIn;
 
-; @p1=!2x^3+2;)
+; p1=!x^3+2;)
 
 	bipush 10	
 	newarray int	
 	putstatic    PSL/temp1 [I	
 	getstatic PSL/temp1 [I	
 	bipush 3	
-	bipush 2	
+	bipush 1	
 	iastore	
 	getstatic PSL/temp1 [I	
 	bipush 0	
@@ -661,25 +661,25 @@ Label37:
 	getstatic PSL/temp1 [I	
 	putstatic	PSL/p1 [I
 
-; PRINT@p1;)
+; PRINTp1;)
 
 	getstatic	PSL/p1 [I
 	invokestatic PSL/print_array([I)V	
 
-; REPEAT2STARTDERIVATIVE@p1;)PRINT@p1;)FINISH
+; REPEAT2STARTDERIVATIVEp1;)PRINTp1;)FINISH
 
 	bipush 2	
 	LabelBeginRepeat1:	
 	dup	
 	ifeq LabelExitRepeat1	
 
-; DERIVATIVE@p1;)
+; DERIVATIVEp1;)
 
 	getstatic	PSL/p1 [I
 	invokestatic PSL/derive([I)[I	
 	putstatic	PSL/p1 [I
 
-; PRINT@p1;)
+; PRINTp1;)
 
 	getstatic	PSL/p1 [I
 	invokestatic PSL/print_array([I)V	
@@ -688,7 +688,7 @@ Label37:
 	goto LabelBeginRepeat1	
 	LabelExitRepeat1:	
 
-; @p2=!x^7+2x^6+10x^4+3x^2+9;)
+; p2=!x^7+2x^6+10x^4+3x^2+9;)
 
 	bipush 10	
 	newarray int	
@@ -716,32 +716,7 @@ Label37:
 	getstatic PSL/temp1 [I	
 	putstatic	PSL/p2 [I
 
-; PRINT@p2;)
-
-	getstatic	PSL/p2 [I
-	invokestatic PSL/print_array([I)V	
-
-; ORDER8@p2STARTPRINT@p2;)FINISH
-
-	bipush 10	
-	newarray int	
-	putstatic    PSL/temp1 [I	
-	getstatic PSL/temp1 [I	
-	bipush 0	
-	bipush 8	
-	iastore	
-	getstatic PSL/temp1 [I	
-	getstatic	PSL/p2 [I
-	invokestatic PSL/order([I[I)I	
-	ifeq LabelExitOrder1	
-
-; PRINT@p2;)
-
-	getstatic	PSL/p2 [I
-	invokestatic PSL/print_array([I)V	
-	LabelExitOrder1:	
-
-; ORDER3@p2STARTDERIVATIVE@p2;)FINISH
+; ORDER3p2STARTDERIVATIVEp2;)FINISH
 
 	bipush 10	
 	newarray int	
@@ -753,28 +728,28 @@ Label37:
 	getstatic PSL/temp1 [I	
 	getstatic	PSL/p2 [I
 	invokestatic PSL/order([I[I)I	
-	ifeq LabelExitOrder2	
+	ifeq LabelExitOrder1	
 
-; DERIVATIVE@p2;)
+; DERIVATIVEp2;)
 
 	getstatic	PSL/p2 [I
 	invokestatic PSL/derive([I)[I	
 	putstatic	PSL/p2 [I
-	LabelExitOrder2:	
+	LabelExitOrder1:	
 
-; PRINT@p2;)
+; PRINTp2;)
 
 	getstatic	PSL/p2 [I
 	invokestatic PSL/print_array([I)V	
 
-; @p3=!@p1+!@p2;)
+; p3=!p1+!p2;)
 
 	getstatic	PSL/p1 [I
 	getstatic	PSL/p2 [I
 	invokestatic PSL/add_polynomial([I[I)[I
 	putstatic	PSL/p3 [I
 
-; PRINT@p3;)
+; PRINTp3;)
 
 	getstatic	PSL/p3 [I
 	invokestatic PSL/print_array([I)V	

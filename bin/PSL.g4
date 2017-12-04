@@ -34,7 +34,7 @@ print_boolean_stmt :	PRINT_BOOLEAN COMMAND_END;
 repeat_stmt :			REPEAT constant compound_stmt;
 
 variable locals [ TypeSpec type = null ]
-		:    '@' IDENTIFIER 
+		:    IDENTIFIER 
 		;
 
 expr locals [ TypeSpec type = null ]

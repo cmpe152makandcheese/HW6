@@ -1,9 +1,8 @@
 Generated: PSL.class
-2x^3 + 2
-6x^2
-12x
-x^7 + 2x^6 + 10x^4 + 3x^2 + 9
+x^3 + 2
+3x^2
+6x
 7x^6 + 12x^5 + 40x^3 + 6x
-7x^6 + 12x^5 + 40x^3 + 18x
+7x^6 + 12x^5 + 40x^3 + 12x
 
-                0.03 seconds total execution time.
+                0.02 seconds total execution time.
