@@ -16,6 +16,7 @@
 
 .field private static p3 [I
 .field private static temp1 [I
+
 .method public static order_helper([I)I
   .limit stack 2
   .limit locals 2
@@ -673,6 +674,9 @@ Label37:
 	dup	
 	ifeq LabelExitRepeat1	
 
+; STARTDERIVATIVEp1;)PRINTp1;)FINISH
+
+
 ; DERIVATIVEp1;)
 
 	getstatic	PSL/p1 [I
@@ -729,6 +733,9 @@ Label37:
 	getstatic	PSL/p2 [I
 	invokestatic PSL/order([I[I)I	
 	ifeq LabelExitOrder1	
+
+; STARTDERIVATIVEp2;)FINISH
+
 
 ; DERIVATIVEp2;)
 

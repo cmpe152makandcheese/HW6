@@ -109,7 +109,7 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 		
 		jFile.println("\tinvokestatic PSL/order([I[I)I\t");
 		jFile.println("\tifeq LabelExitOrder" + orderCount + "\t");
-		Integer value = visit(ctx.compound_stmt());
+		Integer value = visit(ctx.stmt());
 		jFile.println("\tLabelExitOrder" + orderCount + ":\t");
 		
 		return value;
@@ -123,7 +123,7 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 		jFile.println("\tLabelBeginRepeat" + repeatCount + ":\t");
 		jFile.println("\tdup\t");
 		jFile.println("\tifeq LabelExitRepeat" + repeatCount + "\t");
-		Integer value = visit(ctx.compound_stmt());
+		Integer value = visit(ctx.stmt());
 		jFile.println("\tbipush 1\t");
 		jFile.println("\tisub\t");
 		jFile.println("\tgoto LabelBeginRepeat" + repeatCount + "\t");

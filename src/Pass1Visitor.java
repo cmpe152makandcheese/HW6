@@ -226,6 +226,7 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 
 	private void printStockFunctions(PrintWriter jFile) {
         // Order_helper function
+		jFile.println();
 		jFile.println(".method public static order_helper([I)I");
 		jFile.println("  .limit stack 2");
 		jFile.println("  .limit locals 2");

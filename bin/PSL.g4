@@ -27,11 +27,11 @@ stmt :			assignment_stmt
 compound_stmt :			START stmt_list FINISH ;
 stmt_list : 			stmt ( stmt)* ; 
 assignment_stmt : 		variable '=!' expr COMMAND_END;
-order_stmt : 			ORDER expr expr compound_stmt;
+order_stmt : 			ORDER expr expr stmt;
 derivative_stmt: 		DERIVATIVE variable COMMAND_END;
 print_stmt :			PRINT expr COMMAND_END;
 print_boolean_stmt :	PRINT_BOOLEAN COMMAND_END;
-repeat_stmt :			REPEAT constant compound_stmt;
+repeat_stmt :			REPEAT constant stmt;
 
 variable locals [ TypeSpec type = null ]
 		:    IDENTIFIER 
@@ -57,7 +57,7 @@ monomial :		constant
 	 	 ;
 
 power locals [ TypeSpec type = null ] 
-	: 		sign? INTEGER 
+	: 		 INTEGER 
 	;
 	 
 constant locals [ TypeSpec type = null ] 
