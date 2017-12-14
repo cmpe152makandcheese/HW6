@@ -32,6 +32,11 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 	public Integer visitBlock(PSLParser.BlockContext ctx) {
         programName = "PSL";
         
+        try {
+        	visit(ctx.function_decl_list());
+        }
+        catch (java.lang.NullPointerException e) {}
+        
         // Emit the main program header.
         jFile.println();
         jFile.println(".method public static main([Ljava/lang/String;)V");
@@ -45,7 +50,8 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
         jFile.println("\tinvokenonvirtual PascalTextIn/<init>()V");
         jFile.println("\tputstatic        " + programName + "/_standardIn LPascalTextIn;");
         
-        Integer value = visitChildren(ctx);
+        visit(ctx.decl_list());
+        Integer value = visit(ctx.compound_stmt());
         
         // Emit the main program epilogue.
         jFile.println();
@@ -60,6 +66,74 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
         
         return value;
 	}
+	
+	@Override 
+	public Integer visitFunction_decl(PSLParser.Function_declContext ctx) { 
+		jFile.println("\n; " + ctx.getText() + "\n");
+		
+		String function_name = ctx.func_id().getText();
+		String typeName = ctx.func_type().getText();
+		String returnString = "return";
+        
+        TypeSpec type;
+        String   typeIndicator;
+        
+        if (typeName.equalsIgnoreCase("polynomial")) {
+            type = Predefined.polynomialType;
+            typeIndicator = "[I";
+            returnString = "areturn";
+        }
+        else if (typeName.equalsIgnoreCase("void")) {
+            type = Predefined.voidType;
+            typeIndicator = "V";
+        } 
+        else {
+            type = null;
+            typeIndicator = "?";
+        }
+		
+		jFile.print(".method private static " + function_name + "(" );
+		
+		try {
+			visit(ctx.param_decl_list());
+		} catch (java.lang.NullPointerException e) {}
+		
+		jFile.print(")" + typeIndicator + "\n");
+		jFile.println("\t.limit stack 10");
+		jFile.println("\t.limit locals 10");
+
+ 		Integer value = visit(ctx.stmt_list());
+ 		
+ 		try {
+ 			value = visit(ctx.return_stmt());
+ 		} catch (java.lang.NullPointerException e) {}
+ 				
+ 		jFile.println("\t" + returnString);
+ 		jFile.println(".end method");
+ 		
+		return value;
+	}
+	
+	@Override 
+	public Integer visitFunction_call(PSLParser.Function_callContext ctx) { 
+		String functionName = ctx.variable().getText();
+		TypeSpec type = ctx.variable().type;
+		String paramTypes = "";
+		
+		String typeIndicator = (type == Predefined.polynomialType) ? "[I"
+						   :   (type == Predefined.integerType) ?    "I"
+						   :   (type == Predefined.voidType) ?       "V"
+                           :                                         "?";
+
+		
+		jFile.print("\tinvokestatic PSL/");
+		jFile.print(functionName + "(");
+		jFile.print(paramTypes + ")");
+		jFile.print(typeIndicator + "\n");
+		
+		return visitChildren(ctx); 
+	}
+
 	
 	@Override 
 	public Integer visitStmt(PSLParser.StmtContext ctx) { 

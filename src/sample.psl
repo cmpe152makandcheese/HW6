@@ -2,24 +2,22 @@ p1 -> polynomial ;)
 p2 -> polynomial ;)
 p3 -> polynomial ;)
 
+FUNCTION void foo() START
+	p2 =! x^6 ;)
+	PRINT  p2 ;)
+FINISH
+
+FUNCTION polynomial createPoly() START
+	RETURN 2x^2 ;)
+FINISH
+
 START
 	p1 =! x^3 + 2 ;)
-	PRINT p1 ;)
-	
-	REPEAT 2 START
-		DERIVATIVE p1 ;)
-		PRINT p1 ;)
-	FINISH
-	
-	p2 =! x^7 + 2x^6 + 10x^4 + 3x^2 + 9 ;)
-
-	ORDER 3 p2 START
-		DERIVATIVE p2 ;)
-	FINISH
-
+	p2 =! x^2 ;)
 	PRINT p2 ;)
-
-	p3 =! p1 +! p2 ;)
+	foo() ;)
+	
+	p3 =! 0 ;)
+	p3 =! createPoly() ;)
 	PRINT p3 ;)
-
 FINISH

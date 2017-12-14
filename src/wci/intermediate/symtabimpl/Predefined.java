@@ -24,6 +24,7 @@ public class Predefined
 {
     // Predefined types.
     public static TypeSpec polynomialType;
+    public static TypeSpec voidType;
     public static TypeSpec integerType;
     public static TypeSpec realType;
     public static TypeSpec booleanType;
@@ -32,6 +33,7 @@ public class Predefined
 
     // Predefined identifiers.
     public static SymTabEntry polynomialId;
+    public static SymTabEntry voidlId;
     public static SymTabEntry integerId;
     public static SymTabEntry realId;
     public static SymTabEntry booleanId;
