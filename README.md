@@ -7,7 +7,8 @@ Use in main directory `/`
 Example  
 `.\run_jfile.bat loop_control`  
   
-### Sample programs & outputs can be found in `/src`  
+### Sample programs & outputs can be found in `/src`
+Output file format: programname.output  
   
 #### arithmetic_example.psl  
 Assigns polynomials to p1, p2, p3  
