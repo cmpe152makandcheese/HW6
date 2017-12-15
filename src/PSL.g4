@@ -6,7 +6,7 @@ grammar PSL;
 }
 
 program : block;
-block : decl_list compound_stmt ;
+block : decl_list function_decl_list? compound_stmt ;
 
 
 function_decl_list :	function_decl ( function_decl )* ;
