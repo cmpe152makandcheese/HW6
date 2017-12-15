@@ -10,7 +10,10 @@ block : decl_list compound_stmt ;
 
 
 decl_list :		decl ( decl )*  ;
-decl :			var_id '->' type_id COMMAND_END;
+decl :			var_id '->' type_id COMMAND_END
+	 |			var_id '->' {notifyErrorListeners("Missing type from variable declaration");}
+	 |			var_id '->' type_id {notifyErrorListeners("Missing ';)' from variable declaration");}
+	 ;
 var_id :		IDENTIFIER ;
 type_id :		IDENTIFIER ;
 
@@ -25,11 +28,24 @@ stmt :			assignment_stmt
 	 ;
 
 compound_stmt :			START stmt_list FINISH ;
+
 stmt_list : 			stmt ( stmt)* ; 
-assignment_stmt : 		variable '=!' expr COMMAND_END;
+
+assignment_stmt : 		variable '=!' expr COMMAND_END
+	 			|		variable '=!' {notifyErrorListeners("Missing expression to assign in assignment statement");}
+	 			|		variable '=!' expr {notifyErrorListeners("Missing ';)' from assignment statement");}
+	 			;
+
 order_stmt : 			ORDER expr expr stmt;
-derivative_stmt: 		DERIVATIVE variable COMMAND_END;
-print_stmt :			PRINT expr COMMAND_END;
+
+derivative_stmt: 		DERIVATIVE variable COMMAND_END
+			   |		DERIVATIVE {notifyErrorListeners("Variable in DERIVATIVE operation");}
+			   |		DERIVATIVE variable {notifyErrorListeners("Missing ';)' from DERIVATIVE operation");}
+			   ;
+print_stmt :			PRINT expr COMMAND_END
+		   |			PRINT {notifyErrorListeners("Variable in PRINT operation");}
+		   |			PRINT expr {notifyErrorListeners("Missing ';)' from PRINT operation");}
+		   ;
 print_boolean_stmt :	PRINT_BOOLEAN COMMAND_END;
 repeat_stmt :			REPEAT constant stmt;
 
@@ -44,11 +60,13 @@ expr locals [ TypeSpec type = null ]
 	 |			variable		   # variableExpr
 	 |			'(' expr ')'	   # parenExpr
 	 ;
+	 
 
 polynomial :	monomial
 		   |	monomial '+' polynomial
-		   ; 
-
+		   ;
+		  
+		   
 monomial :		constant 
 	 	 | 		coeficient X 
 	 	 | 		coeficient X POWER power 
@@ -87,7 +105,7 @@ POWER:			'^' ;
 ADD_OP :		'+!' ;
 MUL_OP :		'*!' ;
 
-COMMAND_END:	';)';
+COMMAND_END:	';)' ;
 
 
 NEWLINE :		'\r'? '\n' -> skip ;
