@@ -1,14 +1,15 @@
 p1 -> polynomial ;)
+p2 -> polynomial ;)
+p3 -> polynomial ;)
 
 START
-	p1 =! 2x^6 + x^5 + 3 ;)
+	p1 =! x^3 + 2 + 6x^2 ;)
+	p2 =! x^2 + 8 ;)
 	PRINT p1 ;)
+	PRINT p2 ;)
 	
-	REPEAT 5 START
-		ORDER 2 p1 START
-			DERIVATIVE p1 ;)
-			PRINT p1 ;)
-		FINISH	
-	FINISH
+	
+	p3 =! p1 +! p2 +! x^9 ;)
+	PRINT p3 ;)
 	
 FINISH

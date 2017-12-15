@@ -1,0 +1,14 @@
+p1 -> polynomial ;)
+
+START
+	p1 =! 2x^6 + x^5 + 3 ;)
+	PRINT p1 ;)
+	
+	REPEAT 5 START
+		ORDER 2 p1 START
+			DERIVATIVE p1 ;)
+			PRINT p1 ;)
+		FINISH	
+	FINISH
+	
+FINISH

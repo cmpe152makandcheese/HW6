@@ -1,0 +1,23 @@
+p1 -> polynomial ;)
+p2 -> polynomial ;)
+p3 -> polynomial ;)
+
+FUNCTION void foo(c1:polynomial, c2:polynomial) START
+	PRINT c1 ;)
+	PRINT c2 ;)
+FINISH
+
+FUNCTION polynomial createPoly() START
+	RETURN 2x^2 ;)
+FINISH
+
+START
+	p1 =! x^3 + 2 ;)
+	p2 =! x^2 ;)
+	foo(p1, p2) ;)
+	
+	p3 =! 0 ;)
+	PRINT p3 ;)
+	p3 =! createPoly() ;)
+	PRINT p3 ;)
+FINISH
