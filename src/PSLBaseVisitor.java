@@ -49,13 +49,6 @@ public class PSLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements PS
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunction_call(@NotNull PSLParser.Function_callContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitSign(@NotNull PSLParser.SignContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -126,13 +119,6 @@ public class PSLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements PS
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunctionCallExpr(@NotNull PSLParser.FunctionCallExprContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
 	@Override public T visitStmt_list(@NotNull PSLParser.Stmt_listContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -148,6 +134,13 @@ public class PSLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements PS
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitVar_id(@NotNull PSLParser.Var_idContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitFunction_call_stmt(@NotNull PSLParser.Function_call_stmtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -260,6 +253,13 @@ public class PSLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements PS
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitPolynomial(@NotNull PSLParser.PolynomialContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitFunctionCall(@NotNull PSLParser.FunctionCallContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

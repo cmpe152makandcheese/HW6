@@ -1,9 +1,5 @@
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Stack;
-
-import org.antlr.v4.runtime.misc.NotNull;
 
 import wci.intermediate.*;
 import wci.intermediate.symtabimpl.*;
@@ -66,16 +62,11 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
         jFile.println();
         jFile.println(".field private static _runTimer LRunTimer;");
         jFile.println(".field private static _standardIn LPascalTextIn;");
-
-        return visitChildren(ctx);
-	}
-	
-	@Override 
-	public Integer visitDecl_list(PSLParser.Decl_listContext ctx) { 
-        Integer value = visitChildren(ctx); 
         
-        // Initialize temp variables
-        jFile.println(".field private static temp1 [I");
+        Integer value = visit(ctx.decl_list());
+        try {
+        	value = visit(ctx.function_decl_list());
+        } catch (java.lang.NullPointerException e) {}
         
         printStockFunctions(jFile);
         
@@ -91,6 +82,19 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
         jFile.println(".limit stack 1");
         jFile.println(".end method");
         
+        value = visit(ctx.compound_stmt());
+        
+        return value;
+	}
+	
+	@Override 
+	public Integer visitDecl_list(PSLParser.Decl_listContext ctx) { 
+        Integer value = visitChildren(ctx); 
+        
+        // Initialize temp variables
+        jFile.println();
+        jFile.println(".field private static temp1 [I");
+        
         return value; 
 	}
 
@@ -103,9 +107,16 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 	@Override 
 	public Integer visitFunction_decl(PSLParser.Function_declContext ctx) { 
 		visit(ctx.func_id());
-		visit(ctx.func_type());
-
- 		Integer value = visit(ctx.stmt_list());
+		Integer value = visit(ctx.func_type());
+		
+		try {
+			value = visit(ctx.param_decl_list());
+		} catch (java.lang.NullPointerException e) {}
+		
+ 		try {
+ 			value = visit(ctx.stmt_list());
+ 		} catch (java.lang.NullPointerException e) {}
+ 		
 		return value;
 	}
 	
@@ -122,8 +133,8 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 	
 	@Override 
 	public Integer visitFuncExpr(PSLParser.FuncExprContext ctx) { 
-		Integer value = visit(ctx.functionCallExpr());
-		ctx.type = ctx.functionCallExpr().variable().type;
+		Integer value = visit(ctx.functionCall());
+		ctx.type = ctx.functionCall().variable().type;
 		return value;
 	}
 	

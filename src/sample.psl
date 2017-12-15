@@ -1,24 +1,14 @@
 p1 -> polynomial ;)
-p2 -> polynomial ;)
-p3 -> polynomial ;)
-
-FUNCTION void foo(c1:polynomial, c2:constant) START
-	p2 =! x^6 ;)
-	PRINT  p2 ;)
-FINISH
-
-FUNCTION polynomial createPoly() START
-	RETURN 2x^2 ;)
-FINISH
 
 START
-	p1 =! x^3 + 2 ;)
-	p2 =! x^2 ;)
-	PRINT p2 ;)
-	foo() ;)
+	p1 =! 2x^6 + x^5 + 3 ;)
+	PRINT p1 ;)
 	
-	p3 =! 0 ;)
-	PRINT p3 ;)
-	p3 =! createPoly(p1, p2) ;)
-	PRINT p3 ;)
+	REPEAT 5 START
+		ORDER 2 p1 START
+			DERIVATIVE p1 ;)
+			PRINT p1 ;)
+		FINISH	
+	FINISH
+	
 FINISH

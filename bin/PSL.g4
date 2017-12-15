@@ -9,7 +9,7 @@ program : block;
 block : decl_list function_decl_list? compound_stmt ;
 
 function_decl_list :	function_decl ( function_decl )* ;
-function_decl :			FUNCTION func_type func_id '(' param_decl_list? ')' START stmt_list return_stmt? FINISH ;
+function_decl :			FUNCTION func_type func_id '(' param_decl_list? ')' START stmt_list? return_stmt? FINISH ;
 return_stmt :			RETURN expr COMMAND_END ;
 param_decl_list :		param_decl ( ',' param_decl )* ;
 param_decl :			var_id ':' type_id ;
@@ -29,11 +29,11 @@ stmt :			assignment_stmt
 	 |			print_stmt
 	 |			print_boolean_stmt
 	 |			repeat_stmt
-	 |			function_call
+	 |			function_call_stmt
 	 ;
 
 
-function_call :			variable '(' variable_list? ')' COMMAND_END ;
+function_call_stmt :	functionCall COMMAND_END ;
 compound_stmt :			START stmt_list FINISH ;
 stmt_list : 			stmt ( stmt)* ; 
 assignment_stmt : 		variable '=!' expr COMMAND_END ;
@@ -43,7 +43,7 @@ print_stmt :			PRINT expr COMMAND_END ;
 print_boolean_stmt :	PRINT_BOOLEAN COMMAND_END ;
 repeat_stmt :			REPEAT constant stmt ;
 
-variable_list:	variable ( ',' variable )* ;
+variable_list:	expr ( ',' expr )* ;
 
 variable locals [ TypeSpec type = null ]
 		:    IDENTIFIER 
@@ -55,10 +55,10 @@ expr locals [ TypeSpec type = null ]
 	 |			polynomial		   # polynomialExpr
 	 |			variable		   # variableExpr
 	 |			'(' expr ')'	   # parenExpr
-	 |			functionCallExpr   # funcExpr
+	 |			functionCall  	   # funcExpr
 	 ;
 
-functionCallExpr : variable '(' variable_list? ')' ;
+functionCall : variable '(' variable_list? ')' ;
 
 polynomial :	monomial
 		   |	monomial '+' polynomial
