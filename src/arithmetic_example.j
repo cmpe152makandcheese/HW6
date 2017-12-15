@@ -8,6 +8,14 @@
 
 .field private static p1 [I
 
+; p2->polynomial;)
+
+.field private static p2 [I
+
+; p3->polynomial;)
+
+.field private static p3 [I
+
 .field private static temp1 [I
 
 .method public static order_helper([I)I
@@ -639,73 +647,72 @@ Label37:
 	invokenonvirtual PascalTextIn/<init>()V
 	putstatic        PSL/_standardIn LPascalTextIn;
 
-; p1=!2x^6+x^5+3;)
+; p1=!x^3+2+6x^2;)
 
 	bipush 10	
 	newarray int	
 	putstatic    PSL/temp1 [I	
 	getstatic PSL/temp1 [I	
-	bipush 6	
-	bipush 2	
-	iastore	
-	getstatic PSL/temp1 [I	
-	bipush 5	
-	bipush 1	
-	iastore	
-	getstatic PSL/temp1 [I	
-	bipush 0	
 	bipush 3	
+	bipush 1	
 	iastore	
-	getstatic PSL/temp1 [I	
-	putstatic	PSL/p1 [I
-
-; PRINTp1;)
-
-	getstatic	PSL/p1 [I
-	invokestatic PSL/print_array([I)V	
-
-; REPEAT5STARTORDER2p1STARTDERIVATIVEp1;)PRINTp1;)FINISHFINISH
-
-	bipush 5	
-	LabelBeginRepeat1:	
-	dup	
-	ifeq LabelExitRepeat1	
-
-; STARTORDER2p1STARTDERIVATIVEp1;)PRINTp1;)FINISHFINISH
-
-
-; ORDER2p1STARTDERIVATIVEp1;)PRINTp1;)FINISH
-
-	bipush 10	
-	newarray int	
-	putstatic    PSL/temp1 [I	
 	getstatic PSL/temp1 [I	
 	bipush 0	
 	bipush 2	
 	iastore	
 	getstatic PSL/temp1 [I	
-	getstatic	PSL/p1 [I
-	invokestatic PSL/order([I[I)I	
-	ifeq LabelExitOrder1	
-
-; STARTDERIVATIVEp1;)PRINTp1;)FINISH
-
-
-; DERIVATIVEp1;)
-
-	getstatic	PSL/p1 [I
-	invokestatic PSL/derive([I)[I	
+	bipush 2	
+	bipush 6	
+	iastore	
+	getstatic PSL/temp1 [I	
 	putstatic	PSL/p1 [I
+
+; p2=!x^2+8;)
+
+	bipush 10	
+	newarray int	
+	putstatic    PSL/temp1 [I	
+	getstatic PSL/temp1 [I	
+	bipush 2	
+	bipush 1	
+	iastore	
+	getstatic PSL/temp1 [I	
+	bipush 0	
+	bipush 8	
+	iastore	
+	getstatic PSL/temp1 [I	
+	putstatic	PSL/p2 [I
 
 ; PRINTp1;)
 
 	getstatic	PSL/p1 [I
 	invokestatic PSL/print_array([I)V	
-	LabelExitOrder1:	
+
+; PRINTp2;)
+
+	getstatic	PSL/p2 [I
+	invokestatic PSL/print_array([I)V	
+
+; p3=!p1+!p2+!x^9;)
+
+	getstatic	PSL/p1 [I
+	getstatic	PSL/p2 [I
+	invokestatic PSL/add_polynomial([I[I)[I
+	bipush 10	
+	newarray int	
+	putstatic    PSL/temp1 [I	
+	getstatic PSL/temp1 [I	
+	bipush 9	
 	bipush 1	
-	isub	
-	goto LabelBeginRepeat1	
-	LabelExitRepeat1:	
+	iastore	
+	getstatic PSL/temp1 [I	
+	invokestatic PSL/add_polynomial([I[I)[I
+	putstatic	PSL/p3 [I
+
+; PRINTp3;)
+
+	getstatic	PSL/p3 [I
+	invokestatic PSL/print_array([I)V	
 
 	getstatic     PSL/_runTimer LRunTimer;
 	invokevirtual RunTimer.printElapsedTime()V
