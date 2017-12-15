@@ -133,6 +133,26 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 		
 		return visitChildren(ctx); 
 	}
+	
+	@Override 
+	public Integer visitFunctionCallExpr(PSLParser.FunctionCallExprContext ctx) { 
+		String functionName = ctx.variable().getText();
+		TypeSpec type = ctx.variable().type;
+		String paramTypes = "";
+		
+		String typeIndicator = (type == Predefined.polynomialType) ? "[I"
+						   :   (type == Predefined.integerType) ?    "I"
+						   :   (type == Predefined.voidType) ?       "V"
+                           :                                         "?";
+
+		
+		jFile.print("\tinvokestatic PSL/");
+		jFile.print(functionName + "(");
+		jFile.print(paramTypes + ")");
+		jFile.print(typeIndicator + "\n");
+		
+		return visitChildren(ctx); 
+	}
 
 	
 	@Override 

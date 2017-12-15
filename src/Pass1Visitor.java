@@ -121,6 +121,13 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 	}
 	
 	@Override 
+	public Integer visitFuncExpr(PSLParser.FuncExprContext ctx) { 
+		Integer value = visit(ctx.functionCallExpr());
+		ctx.type = ctx.functionCallExpr().variable().type;
+		return value;
+	}
+	
+	@Override 
 	public Integer visitFunc_type(PSLParser.Func_typeContext ctx) { 
 		String typeName = ctx.IDENTIFIER().toString();
 		
@@ -252,6 +259,7 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
         SymTabEntry variableId = symTabStack.lookup(variableName);
         
         ctx.type = variableId.getTypeSpec();
+        
 		return visitChildren(ctx); 
 	}
 

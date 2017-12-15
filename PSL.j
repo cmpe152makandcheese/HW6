@@ -739,9 +739,15 @@ Label37:
 	getstatic PSL/temp1 [I	
 	putstatic	PSL/p3 [I
 
+; PRINTp3;)
+
+	getstatic	PSL/p3 [I
+	invokestatic PSL/print_array([I)V	
+
 ; p3=!createPoly();)
 
-	putstatic	PSL/p3 ?
+	invokestatic PSL/createPoly()[I
+	putstatic	PSL/p3 [I
 
 ; PRINTp3;)
 

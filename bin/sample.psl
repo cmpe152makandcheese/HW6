@@ -18,6 +18,7 @@ START
 	foo() ;)
 	
 	p3 =! 0 ;)
+	PRINT p3 ;)
 	p3 =! createPoly() ;)
 	PRINT p3 ;)
 FINISH
