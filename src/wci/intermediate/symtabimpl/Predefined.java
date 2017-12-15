@@ -33,7 +33,7 @@ public class Predefined
 
     // Predefined identifiers.
     public static SymTabEntry polynomialId;
-    public static SymTabEntry voidlId;
+    public static SymTabEntry voidId;
     public static SymTabEntry integerId;
     public static SymTabEntry realId;
     public static SymTabEntry booleanId;
@@ -79,6 +79,13 @@ public class Predefined
      */
     private static void initializeTypes(SymTabStack symTabStack)
     {
+    	// Type void.
+    	voidId = symTabStack.enterLocal("void");
+    	voidType = TypeFactory.createType(VOID);
+    	voidType.setIdentifier(voidId);
+    	voidId.setDefinition(DefinitionImpl.TYPE);
+    	voidId.setTypeSpec(voidType);
+    	
     	// Type polynomial.
     	polynomialId = symTabStack.enterLocal("polynomial");
     	polynomialType = TypeFactory.createType(POLYNOMIAL);

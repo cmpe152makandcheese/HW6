@@ -39,12 +39,6 @@ public interface PSLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDecl(@NotNull PSLParser.DeclContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PSLParser#function_call}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunction_call(@NotNull PSLParser.Function_callContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link PSLParser#sign}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -108,12 +102,6 @@ public interface PSLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMulExpr(@NotNull PSLParser.MulExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PSLParser#functionCallExpr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionCallExpr(@NotNull PSLParser.FunctionCallExprContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link PSLParser#stmt_list}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -131,6 +119,12 @@ public interface PSLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVar_id(@NotNull PSLParser.Var_idContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PSLParser#function_call_stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunction_call_stmt(@NotNull PSLParser.Function_call_stmtContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PSLParser#repeat_stmt}.
 	 * @param ctx the parse tree
@@ -230,6 +224,12 @@ public interface PSLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPolynomial(@NotNull PSLParser.PolynomialContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PSLParser#functionCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionCall(@NotNull PSLParser.FunctionCallContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PSLParser#variable}.
 	 * @param ctx the parse tree

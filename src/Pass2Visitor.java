@@ -3,6 +3,8 @@ import java.util.Stack;
 
 import org.antlr.v4.runtime.misc.NotNull;
 
+import java.util.Hashtable;
+
 import wci.intermediate.*;
 import wci.intermediate.symtabimpl.*;
 
@@ -13,6 +15,9 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
     private Integer[] monomialReference;
     private Integer orderCount;
     private Integer repeatCount;
+    private Hashtable<String, Stack<String>> functionParams = new Hashtable<String, Stack<String>>();
+    private Stack<String> params = new Stack<String>();
+    private Stack<String> paramTypeHolder = new Stack<String>();
     
     public Pass2Visitor(PrintWriter jFile)
     {
@@ -31,11 +36,11 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 	@Override 
 	public Integer visitBlock(PSLParser.BlockContext ctx) {
         programName = "PSL";
-        
+
+        visit(ctx.decl_list());
         try {
         	visit(ctx.function_decl_list());
-        }
-        catch (java.lang.NullPointerException e) {}
+        } catch (java.lang.NullPointerException e) {}
         
         // Emit the main program header.
         jFile.println();
@@ -49,8 +54,7 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
         jFile.println("\tdup");
         jFile.println("\tinvokenonvirtual PascalTextIn/<init>()V");
         jFile.println("\tputstatic        " + programName + "/_standardIn LPascalTextIn;");
-        
-        visit(ctx.decl_list());
+       
         Integer value = visit(ctx.compound_stmt());
         
         // Emit the main program epilogue.
@@ -94,15 +98,24 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 		
 		jFile.print(".method private static " + function_name + "(" );
 		
+		params = new Stack<String>();
+		
+		Integer value = -1;
+		
 		try {
-			visit(ctx.param_decl_list());
+			value = visit(ctx.param_decl_list());
 		} catch (java.lang.NullPointerException e) {}
+
+
+		functionParams.put(function_name, params);
 		
 		jFile.print(")" + typeIndicator + "\n");
 		jFile.println("\t.limit stack 10");
 		jFile.println("\t.limit locals 10");
-
- 		Integer value = visit(ctx.stmt_list());
+		
+ 		try {
+ 			value = visit(ctx.stmt_list());
+ 		} catch (java.lang.NullPointerException e) {}
  		
  		try {
  			value = visit(ctx.return_stmt());
@@ -115,27 +128,14 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 	}
 	
 	@Override 
-	public Integer visitFunction_call(PSLParser.Function_callContext ctx) { 
-		String functionName = ctx.variable().getText();
-		TypeSpec type = ctx.variable().type;
-		String paramTypes = "";
-		
-		String typeIndicator = (type == Predefined.polynomialType) ? "[I"
-						   :   (type == Predefined.integerType) ?    "I"
-						   :   (type == Predefined.voidType) ?       "V"
-                           :                                         "?";
+	public Integer visitVar_id(PSLParser.Var_idContext ctx) {
+		params.push(ctx.getText());
 
-		
-		jFile.print("\tinvokestatic PSL/");
-		jFile.print(functionName + "(");
-		jFile.print(paramTypes + ")");
-		jFile.print(typeIndicator + "\n");
-		
 		return visitChildren(ctx); 
 	}
 	
 	@Override 
-	public Integer visitFunctionCallExpr(PSLParser.FunctionCallExprContext ctx) { 
+	public Integer visitFunctionCall(PSLParser.FunctionCallContext ctx) { 
 		String functionName = ctx.variable().getText();
 		TypeSpec type = ctx.variable().type;
 		String paramTypes = "";
@@ -145,13 +145,33 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 						   :   (type == Predefined.voidType) ?       "V"
                            :                                         "?";
 
+		// Pass by value
+		Integer value = visit(ctx.variable());
+		paramTypeHolder = new Stack<String>();
+		
+		try {
+			value = visit(ctx.variable_list());
+		} catch (java.lang.NullPointerException e) {}
+		
+		Stack<String> paramHolder = functionParams.get(functionName);
+		Integer i = paramHolder.size() - 1;
+		
+		while(!paramHolder.isEmpty()) {
+			TypeSpec paramType = ctx.variable_list().expr(i).type;
+			String paramTypeIndicator = (paramType == Predefined.polynomialType) ? "[I"
+								   :   (paramType == Predefined.integerType) ?    "I"
+								   :   (paramType == Predefined.voidType) ?       "V"
+								   :                                         "?";
+			jFile.println("\tputstatic PSL/" + paramHolder.pop() + " " + paramTypeIndicator);
+			i--;
+		}
 		
 		jFile.print("\tinvokestatic PSL/");
 		jFile.print(functionName + "(");
 		jFile.print(paramTypes + ")");
 		jFile.print(typeIndicator + "\n");
 		
-		return visitChildren(ctx); 
+		return value; 
 	}
 
 	
@@ -347,27 +367,18 @@ public class Pass2Visitor extends PSLBaseVisitor<Integer> {
 		// Check if coeficient child exists
 		try {
 			monomialReference[0] = Integer.parseInt(ctx.coeficient().getText());
-		}
-		catch (java.lang.NullPointerException e) {
-			// Ignore
-		}
+		} catch (java.lang.NullPointerException e) {}
 		
 		// Check if power child exists
 		try {
 			monomialReference[1] = Integer.parseInt(ctx.power().getText());
-		}
-		catch (java.lang.NullPointerException e) {
-			// Ignore
-		}
+		} catch (java.lang.NullPointerException e) {}
 		
 		// Check if constant child exists
 		try {
 			monomialReference[0] = Integer.parseInt(ctx.constant().getText());
 			monomialReference[1] = 0;
-		}
-		catch (java.lang.NullPointerException e) {
-			// Ignore
-		}
+		} catch (java.lang.NullPointerException e) {}
 		
 		jFile.println("\tbipush " + monomialReference[1] + "\t");
 		jFile.println("\tbipush " + monomialReference[0] + "\t");

@@ -9,6 +9,14 @@ program : block;
 block : decl_list compound_stmt ;
 
 
+function_decl_list :	function_decl ( function_decl )* ;
+function_decl :			FUNCTION func_type func_id '(' param_decl_list? ')' START stmt_list? return_stmt? FINISH ;
+return_stmt :			RETURN expr COMMAND_END ;
+param_decl_list :		param_decl ( ',' param_decl )* ;
+param_decl :			var_id ':' type_id ;
+func_id :				IDENTIFIER ;
+func_type :				IDENTIFIER ;
+
 decl_list :		decl ( decl )*  ;
 decl :			var_id '->' type_id COMMAND_END
 	 |			var_id '->' {notifyErrorListeners("Missing type from variable declaration");}
@@ -25,12 +33,13 @@ stmt :			assignment_stmt
 	 |			print_stmt
 	 |			print_boolean_stmt
 	 |			repeat_stmt
+	 |			function_call_stmt
 	 ;
 
+
+function_call_stmt :	functionCall COMMAND_END ;
 compound_stmt :			START stmt_list FINISH ;
-
 stmt_list : 			stmt ( stmt)* ; 
-
 assignment_stmt : 		variable '=!' expr COMMAND_END
 	 			|		variable '=!' {notifyErrorListeners("Missing expression to assign in assignment statement");}
 	 			|		variable '=!' expr {notifyErrorListeners("Missing ';)' from assignment statement");}
@@ -48,7 +57,7 @@ print_stmt :			PRINT expr COMMAND_END
 		   ;
 print_boolean_stmt :	PRINT_BOOLEAN COMMAND_END;
 repeat_stmt :			REPEAT constant stmt;
-
+variable_list:	expr ( ',' expr )* ;
 variable locals [ TypeSpec type = null ]
 		:    IDENTIFIER 
 		;
@@ -59,8 +68,10 @@ expr locals [ TypeSpec type = null ]
 	 |			polynomial		   # polynomialExpr
 	 |			variable		   # variableExpr
 	 |			'(' expr ')'	   # parenExpr
+	 |			functionCall  	   # funcExpr
 	 ;
-	 
+
+functionCall : variable '(' variable_list? ')' ;
 
 polynomial :	monomial
 		   |	monomial '+' polynomial

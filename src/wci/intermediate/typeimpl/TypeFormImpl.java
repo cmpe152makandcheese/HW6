@@ -12,7 +12,7 @@ import wci.intermediate.TypeForm;
  */
 public enum TypeFormImpl implements TypeForm
 {
-    SCALAR, ENUMERATION, SUBRANGE, ARRAY, RECORD, POLYNOMIAL;
+    SCALAR, ENUMERATION, SUBRANGE, ARRAY, RECORD, POLYNOMIAL, VOID;
 
     public String toString()
     {
