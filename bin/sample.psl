@@ -2,7 +2,7 @@ p1 -> polynomial ;)
 p2 -> polynomial ;)
 p3 -> polynomial ;)
 
-FUNCTION void foo() START
+FUNCTION void foo(c1:polynomial, c2:constant) START
 	p2 =! x^6 ;)
 	PRINT  p2 ;)
 FINISH
@@ -19,6 +19,6 @@ START
 	
 	p3 =! 0 ;)
 	PRINT p3 ;)
-	p3 =! createPoly() ;)
+	p3 =! createPoly(p1, p2) ;)
 	PRINT p3 ;)
 FINISH
