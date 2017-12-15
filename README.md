@@ -23,3 +23,6 @@ Pass by value in function foo
 #### loop_control.psl  
 Loop statement (REPEAT >> repeats n times)  
 Control statement (ORDER >> True if highest exponent is larger than constant)  
+
+#### error_recovery.psl  
+Shows program not crashing with missing ;) and FINISH  

@@ -1,0 +1,21 @@
+line 2:0 Missing ';)' from variable declaration
+line 4:0 Missing ';)' from variable declaration
+line 10:1 missing 'FINISH' at '<EOF>'
+
+===== CROSS-REFERENCE TABLE =====
+
+*** PROGRAM PSL ***
+
+Identifier       Line numbers    Type specification
+----------       ------------    ------------------
+p1
+                                 Defined as: variable
+                                 Scope nesting level: 1
+                                 Type form = polynomial, Type id = polynomial
+p2
+                                 Defined as: variable
+                                 Scope nesting level: 1
+                                 Type form = polynomial, Type id = polynomial
+Generated: PSL.class
+2x^6 + x^5 + 3
+x^3
