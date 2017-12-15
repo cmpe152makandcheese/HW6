@@ -635,6 +635,50 @@ Label37:
 .limit stack 1
 .end method
 
+; FUNCTIONvoidfoo()STARTp2=!x^6;)PRINTp2;)FINISH
+
+.method private static foo()V
+	.limit stack 10
+	.limit locals 10
+
+; p2=!x^6;)
+
+	bipush 10	
+	newarray int	
+	putstatic    PSL/temp1 [I	
+	getstatic PSL/temp1 [I	
+	bipush 6	
+	bipush 1	
+	iastore	
+	getstatic PSL/temp1 [I	
+	putstatic	PSL/p2 [I
+
+; PRINTp2;)
+
+	getstatic	PSL/p2 [I
+	invokestatic PSL/print_array([I)V	
+	return
+.end method
+
+; FUNCTIONpolynomialcreatePoly()STARTRETURN2x^2;)FINISH
+
+.method private static createPoly()[I
+	.limit stack 10
+	.limit locals 10
+
+; 
+
+	bipush 10	
+	newarray int	
+	putstatic    PSL/temp1 [I	
+	getstatic PSL/temp1 [I	
+	bipush 2	
+	bipush 2	
+	iastore	
+	getstatic PSL/temp1 [I	
+	areturn
+.end method
+
 .method public static main([Ljava/lang/String;)V
 
 	new RunTimer
@@ -662,98 +706,47 @@ Label37:
 	getstatic PSL/temp1 [I	
 	putstatic	PSL/p1 [I
 
-; PRINTp1;)
-
-	getstatic	PSL/p1 [I
-	invokestatic PSL/print_array([I)V	
-
-; REPEAT2STARTDERIVATIVEp1;)PRINTp1;)FINISH
-
-	bipush 2	
-	LabelBeginRepeat1:	
-	dup	
-	ifeq LabelExitRepeat1	
-
-; STARTDERIVATIVEp1;)PRINTp1;)FINISH
-
-
-; DERIVATIVEp1;)
-
-	getstatic	PSL/p1 [I
-	invokestatic PSL/derive([I)[I	
-	putstatic	PSL/p1 [I
-
-; PRINTp1;)
-
-	getstatic	PSL/p1 [I
-	invokestatic PSL/print_array([I)V	
-	bipush 1	
-	isub	
-	goto LabelBeginRepeat1	
-	LabelExitRepeat1:	
-
-; p2=!x^7+2x^6+10x^4+3x^2+9;)
+; p2=!x^2;)
 
 	bipush 10	
 	newarray int	
 	putstatic    PSL/temp1 [I	
 	getstatic PSL/temp1 [I	
-	bipush 7	
+	bipush 2	
 	bipush 1	
 	iastore	
 	getstatic PSL/temp1 [I	
-	bipush 6	
-	bipush 2	
-	iastore	
-	getstatic PSL/temp1 [I	
-	bipush 4	
-	bipush 10	
-	iastore	
-	getstatic PSL/temp1 [I	
-	bipush 2	
-	bipush 3	
-	iastore	
-	getstatic PSL/temp1 [I	
-	bipush 0	
-	bipush 9	
-	iastore	
-	getstatic PSL/temp1 [I	
 	putstatic	PSL/p2 [I
-
-; ORDER3p2STARTDERIVATIVEp2;)FINISH
-
-	bipush 10	
-	newarray int	
-	putstatic    PSL/temp1 [I	
-	getstatic PSL/temp1 [I	
-	bipush 0	
-	bipush 3	
-	iastore	
-	getstatic PSL/temp1 [I	
-	getstatic	PSL/p2 [I
-	invokestatic PSL/order([I[I)I	
-	ifeq LabelExitOrder1	
-
-; STARTDERIVATIVEp2;)FINISH
-
-
-; DERIVATIVEp2;)
-
-	getstatic	PSL/p2 [I
-	invokestatic PSL/derive([I)[I	
-	putstatic	PSL/p2 [I
-	LabelExitOrder1:	
 
 ; PRINTp2;)
 
 	getstatic	PSL/p2 [I
 	invokestatic PSL/print_array([I)V	
 
-; p3=!p1+!p2;)
+; foo();)
 
-	getstatic	PSL/p1 [I
-	getstatic	PSL/p2 [I
-	invokestatic PSL/add_polynomial([I[I)[I
+	invokestatic PSL/foo()V
+
+; p3=!0;)
+
+	bipush 10	
+	newarray int	
+	putstatic    PSL/temp1 [I	
+	getstatic PSL/temp1 [I	
+	bipush 0	
+	bipush 0	
+	iastore	
+	getstatic PSL/temp1 [I	
+	putstatic	PSL/p3 [I
+
+; PRINTp3;)
+
+	getstatic	PSL/p3 [I
+	invokestatic PSL/print_array([I)V	
+
+; p3=!createPoly();)
+
+	invokestatic PSL/createPoly()[I
 	putstatic	PSL/p3 [I
 
 ; PRINTp3;)

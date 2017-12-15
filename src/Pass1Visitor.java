@@ -17,6 +17,7 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 	private SymTabStack symTabStack;
     private SymTabEntry programId;
     private SymTabEntry variableIdReference;
+    private SymTabEntry functionIdReference;
     private PrintWriter jFile;
     
     public Pass1Visitor()
@@ -100,6 +101,58 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
 	}
 	
 	@Override 
+	public Integer visitFunction_decl(PSLParser.Function_declContext ctx) { 
+		visit(ctx.func_id());
+		visit(ctx.func_type());
+
+ 		Integer value = visit(ctx.stmt_list());
+		return value;
+	}
+	
+	@Override 
+	public Integer visitFunc_id(PSLParser.Func_idContext ctx) { 
+		String variableName = ctx.IDENTIFIER().toString();
+        
+        SymTabEntry variableId = symTabStack.enterLocal(variableName);
+        variableId.setDefinition(FUNCTION);
+        functionIdReference = variableId;
+        
+        return visitChildren(ctx); 
+	}
+	
+	@Override 
+	public Integer visitFuncExpr(PSLParser.FuncExprContext ctx) { 
+		Integer value = visit(ctx.functionCallExpr());
+		ctx.type = ctx.functionCallExpr().variable().type;
+		return value;
+	}
+	
+	@Override 
+	public Integer visitFunc_type(PSLParser.Func_typeContext ctx) { 
+		String typeName = ctx.IDENTIFIER().toString();
+		
+        TypeSpec type;
+        
+        if (typeName.equalsIgnoreCase("polynomial")) {
+            type = Predefined.polynomialType;
+        }
+        else if (typeName.equalsIgnoreCase("constant")) {
+            type = Predefined.integerType;
+        }
+        else if (typeName.equalsIgnoreCase("void")) {
+            type = Predefined.voidType;
+        }
+        else {
+            type = null;
+        }
+                    
+        SymTabEntry id = functionIdReference;
+        id.setTypeSpec(type);
+        
+        return visitChildren(ctx); 
+	}
+	
+	@Override 
 	public Integer visitVar_id(PSLParser.Var_idContext ctx) {
 		String variableName = ctx.IDENTIFIER().toString();
         
@@ -124,6 +177,10 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
         else if (typeName.equalsIgnoreCase("constant")) {
             type = Predefined.integerType;
             typeIndicator = "I";
+        }
+        else if (typeName.equalsIgnoreCase("void")) {
+            type = Predefined.voidType;
+            typeIndicator = "V";
         }
         else {
             type = null;
@@ -202,6 +259,7 @@ public class Pass1Visitor extends PSLBaseVisitor<Integer> {
         SymTabEntry variableId = symTabStack.lookup(variableName);
         
         ctx.type = variableId.getTypeSpec();
+        
 		return visitChildren(ctx); 
 	}
 
